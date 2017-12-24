@@ -11,7 +11,7 @@
     "compression": "*",
     "dotenv": "*",
     "express": "*",
-    "pg": "^7.4.0",
+    "firebase-admin": "^5.6.0",
     "xregexp": "*"
   },
   "engines": {

@@ -26,32 +26,74 @@ function run() {
 	getAccount(summonerName, region);
 };
 
-
-
 function getAccount(summonerName, region) {
-	var xml = new XMLHttpRequest();
-	xml.onreadystatechange = function() {
-		if (xml.readyState == 4) {
-			if (xml.status == 200) {
-				let data = JSON.parse(xml.responseText);
+	makeRequest('/test?name=' + summonerName + '&region=' + region, (data) => {
+		dataBox.innerHTML = `
+			<tr>
+				<th rowspan="2"></th>
+				<th colspan="4">${data.player.name}</th>
+				<th colspan="4">Global</th>
+			</tr>
+			<tr>
+				<td>Winrate</td>
+				<td>Stat 1</td>
+				<td>Stat 2</td>
+				<td>Stat 3</td>
+				<td>Winrate</td>
+				<td>Stat 1</td>
+				<td>Stat 2</td>
+				<td>Stat 3</td>
+			</tr>
+		`;
 
-				let title = document.createElement('h3');
-				title.innerHTML = 'Data for ' + summonerName + ':';
-				dataBox.appendChild(title);
+		Object.entries(data.playerData).forEach(([runeId, playerRune]) => {
+			const globalRune = data.globalData[runeId];
 
-				data.forEach(r => {
-					let runeName = document.createElement('b');
-					runeName.innerHTML = r.name;
-					dataBox.appendChild(runeName);
+			const playerStats = [
+				playerRune.wins / playerRune.games,
+				playerRune.stats[0] / playerRune.games,
+				playerRune.stats[1] / playerRune.games,
+				playerRune.stats[2] / playerRune.games
+			];
+			const globalStats = [
+				globalRune.wins / globalRune.games,
+				globalRune.stats[0] / globalRune.games,
+				globalRune.stats[1] / globalRune.games,
+				globalRune.stats[2] / globalRune.games
+			];
 
-					let runeDetailsBox = document.createElement('div');
-					runeDetailsBox.innerHTML =
-						'<p>Winrate: ' + (r.wins / r.games) + '</p>' +
-						'<p>Var 1: ' + (r.var1 / r.games) + '</p>' +
-						'<p>Var 2: ' + (r.var2 / r.games) + '</p>' +
-						'<p>Var 3: ' + (r.var3 / r.games) + '</p>';
-					dataBox.appendChild(runeDetailsBox);
-				});
+			let row = '<tr><td>' + runeNames[runeId] + '</td>';
+
+			for (let i = 0; i < 4; i++) {
+				if (playerStats[i] > globalStats[i]) {
+					row += '<td><b>' + playerStats[i].toFixed(2) + '</b></td>';
+				}
+				else {
+					row += '<td>' + playerStats[i].toFixed(2) + '</td>';	
+				}
+			}
+			for (let i = 0; i < 4; i++) {
+				if (playerStats[i] < globalStats[i]) {
+					row += '<td><b>' + globalStats[i].toFixed(2) + '</b></td>';
+				}
+				else {
+					row += '<td>' + globalStats[i].toFixed(2) + '</td>';	
+				}
+			}
+			row += '</tr>';
+
+			dataBox.innerHTML += row;
+		});
+	});
+}
+
+function makeRequest(url, callback) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200) {
+				console.log(xhr.responseText);
+				callback(JSON.parse(xhr.responseText));
 			}
 			else {
 				console.log('HTTP Error ' + xml.status);
@@ -59,8 +101,8 @@ function getAccount(summonerName, region) {
 				console.log(xml.statusText);
 			}
 		}
-	};
-	xml.open('GET', 'http://localhost:5000/test?name=' + summonerName + '&region=' + region, true);
-	xml.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xml.send();
+	}
+	xhr.open('GET', 'http://localhost:5000' + url, true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.send();
 }
