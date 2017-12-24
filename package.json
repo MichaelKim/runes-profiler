@@ -11,6 +11,7 @@
     "compression": "*",
     "dotenv": "*",
     "express": "*",
+    "pg": "^7.4.0",
     "xregexp": "*"
   },
   "engines": {

@@ -6,11 +6,17 @@ const comp    = require("compression");
 const https   = require("https");
 const XRegExp = require("xregexp");
 
+const db = require("../db");
+
+db.query('SELECT * FROM runes', [], (err, res) => {
+	console.log(res.rows);
+});
+
 const nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
 
 app.use(comp());
 
-app.get('/run', function(req, res) {
+app.get('/summoner', function(req, res) {
 	const summonerName = req.query.name;
 	const region = getRegionEndpoint(req.query.region);
 
@@ -57,6 +63,7 @@ app.get('/run', function(req, res) {
 					let playerData = matchData.participants.find((e) => e.participantId === pId);
 
 					data.push({
+						win: playerData.stats.win,
 						champion: playerData.championId,
 						runesData: [
 							{
