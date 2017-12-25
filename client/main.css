@@ -1,0 +1,149 @@
+@font-face {
+  font-family: 'Beaufort';
+  font-weight: 400;
+  src: url('fonts/Beaufort-Regular.woff2') format('woff2'),
+       url('fonts/Beaufort-Regular.woff')  format('woff'),
+       url('fonts/Beaufort-Regular.ttf')   format('truetype');
+}
+
+@font-face {
+  font-family: 'Beaufort';
+  font-style: italic;
+  font-weight: 400;
+  src: url('fonts/Beaufort-Italic.woff2') format('woff2'),
+       url('fonts/Beaufort-Italic.woff')  format('woff'),
+       url('fonts/Beaufort-Italic.ttf')   format('truetype');
+}
+
+@font-face {
+  font-family: 'Beaufort';
+  font-weight: 700;
+  src: url('fonts/Beaufort-Bold.woff2') format('woff2'),
+       url('fonts/Beaufort-Bold.woff')  format('woff'),
+       url('fonts/Beaufort-Bold.ttf')   format('truetype');
+}
+
+@font-face {
+  font-family: 'Spiegel';
+  font-weight: 400;
+  src: url('fonts/Spiegel-Regular.woff2') format('woff2'),
+       url('fonts/Spiegel-Regular.woff')  format('woff'),
+       url('fonts/Spiegel-Regular.ttf')   format('truetype');
+}
+
+@font-face {
+  font-family: 'Spiegel';
+  font-style: italic;
+  font-weight: 400;
+  src: url('fonts/Spiegel-Italic.woff2') format('woff2'),
+       url('fonts/Spiegel-Italic.woff')  format('woff'),
+       url('fonts/Spiegel-Italic.ttf')   format('truetype');
+}
+
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: Beaufort, serif;
+	background-color: black;
+	color: #f0e6d2;
+}
+
+#center {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	background: linear-gradient(90deg,#000000,transparent 10%,transparent 90%,#0a0a0c) top no-repeat,url('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/year-in-review-2017/en_US/40a18ff561c9965f0d0b5b09d56c3583726b402a/assets/img/global/backdrops/landing-bg-1440w.jpg') top no-repeat;
+	background-size: 1440px auto,1440px auto;
+}
+
+#landing {
+	margin: 0 auto;
+	text-align: center;
+}
+
+#landing .title {
+	font-size: 4.375rem;
+	line-height: 1;
+	margin: 0;
+}
+
+#landing .body {
+	max-width: 450px;
+}
+
+#landing #input-box {
+	position: relative;
+	max-width: 600px;
+	height: 50px;
+	margin: 0 auto;
+	border-bottom: 1px solid #f0e6d2;
+}
+
+#landing #summoner-name-input {
+	display: block;
+	width: 100%;
+	padding: 15px 150px 15px 15px;
+	font-size: 20px;
+	background: none;
+	border: none;
+	box-sizing: border-box;
+	outline: none;
+	font-family: Beaufort;
+	color: #f0e6d2;
+}
+
+#landing #summoner-name-input::placeholder {
+	font-family: Beaufort;
+	color: darkgrey;
+}
+
+#landing #region-select {
+	position: absolute;
+	top: 0;
+	right: 50px;
+	margin: 10px 10px 0 0;
+	height: 30px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#landing #region-select option {
+	color: black;
+}
+
+#landing #search-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 10px 10px 0 0;
+	height: 30px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#stats {
+	display: none;
+	margin: 200px auto 0 auto;
+}
+
+table, th, td {
+	border: 1px solid white;
+	border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;    
+}
+

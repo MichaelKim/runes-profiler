@@ -2,6 +2,9 @@ var nameInput = document.getElementById('summoner-name-input');
 var regionSelect = document.getElementById('region-select');
 var searchBtn = document.getElementById('search-btn');
 
+var landingBox = document.getElementById('landing');
+var statsBox = document.getElementById('stats');
+
 var dataBox = document.getElementById('data-box');
 
 var nameHistory = (Cookies.get('hist') || '').split('&').filter(c => c);
@@ -84,6 +87,9 @@ function getAccount(summonerName, region) {
 
 			dataBox.innerHTML += row;
 		});
+
+		landingBox.style.display = 'none';
+		statsBox.style.display = 'block';
 	});
 }
 
