@@ -1,10 +1,13 @@
+* {
+	font-family: Beaufort, serif;
+}
+
 html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	font-family: Beaufort, serif;
 	color: #f0e6d2;
 	background-color: black;
 }
@@ -16,6 +19,7 @@ html, body {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center top;
+	filter: blur(5px);
 }
 
 #center {
@@ -23,10 +27,12 @@ html, body {
 	width: 100%;
 	height: 100%;
 	display: flex;
-	align-items: center;
 }
 
 .loader {
+	position: fixed;
+	top: calc(50% - 60px);
+	left: calc(50% - 60px);
 	margin: 0 auto;
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
@@ -36,13 +42,37 @@ html, body {
     animation: spin 2s linear infinite;
 }
 
+.profile {
+	padding: 5px;
+	border-bottom: 2px solid #f0e6d2;
+}
+
+.profile-image {
+	display: inline;
+	width: 50px;
+	height: 50px;
+	border-radius: 2px;
+}
+
+.profile-name {
+	display: inline;
+	position: relative;
+	top: -11px;
+	left: 10px;
+}
+
+
+.keystones {
+
+}
+
+
 #stats {
-	display: none;
-	opacity: 0;
 	margin: 200px auto 0 auto;
 }
 
 table, th, td {
+	display: none;
 	border: 1px solid white;
 	border-collapse: collapse;
 }
