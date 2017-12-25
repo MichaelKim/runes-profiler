@@ -26,7 +26,9 @@ function run() {
 
 	nameHistory.push(summonerName);
 	Cookies.set('hist', nameHistory.join('&'), { expires: 365 });
-	getAccount(summonerName, region);
+
+	window.location.href = 'http://localhost:5000/test?name=' + summonerName + '&region=' + region;
+	// getAccount(summonerName, region);
 };
 
 function getAccount(summonerName, region) {

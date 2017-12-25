@@ -1,7 +1,6 @@
 const https   = require("https");
 const XRegExp = require("xregexp");
 const nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
-const runeNames = require("./runeNames.json");
 
 function query(path, region, callback) {
 	https.get('https://' + region + '.api.riotgames.com' + path + '?api_key=' + process.env.RIOT_API, (res) => {
@@ -59,9 +58,23 @@ function validName(summonerName) {
 	return XRegExp.test(summonerName, nameRegex);
 }
 
-function getRuneName(runeId) {
-	return runeNames[runeId] || '';
+function getRegionEndpoint(region) {
+	return {
+		'br': 'br1',
+		'eune': 'eun1',
+		'euw': 'euw1',
+		'jp': 'jp1',
+		'kr': 'kr',
+		'lan': 'la1',
+		'las': 'la2',
+		'na': 'na1',
+		'oce': 'oc1',
+		'tr': 'tr1',
+		'ru': 'ru',
+		'pbe': 'pbe1'
+	}[region] || '';
 }
+
 
 module.exports = {
 	query,
@@ -69,5 +82,5 @@ module.exports = {
 	getMatches,
 	getMatch,
 	validName,
-	getRuneName
+	getRegionEndpoint
 };
