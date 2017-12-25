@@ -1,20 +1,17 @@
 require('dotenv').config();
-require('marko/node-require'); // Allow Node.js to require and load `.marko` files
 
 const express = require("express");
 const app     = express();
 const comp    = require("compression");
-const markoExpress = require('marko/express');
 
 app.use(comp());
-app.use(markoExpress()); //enable res.marko(template, data)
 
 app.get('/*', (req, res, next) => {
 	console.log('GET:', req.url);
 	next();
 });
 
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static(__dirname + '/../client'));
 
 app.use('/', require('./routes'));
 

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-router.use('/summoner', require('./summoner'));
+router.use('/player', require('./player'));
 router.use('/test', require('./test'));
 
 router.get('/rune', function (req, res) {
