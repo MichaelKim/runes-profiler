@@ -44,11 +44,13 @@ Riot Games API Challenge 2017 - Runes Reforged
 		- [ ] Winrate
 		- [ ] Winrate per champion
 		- [ ] Match history
+	- [ ] Style the scrollbar
 - Extra features
 	- [ ] Rune page builder
 	- [ ] Share rune pages
 	- [ ] Animated champion banners (see lolking champion pages)
 		- Done by displaying .mp4 video
+	- [ ] Animate landing background (grab from youtube video)
 
 ## Usage
 

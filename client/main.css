@@ -47,8 +47,18 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font-family: Beaufort, serif;
-	background-color: black;
 	color: #f0e6d2;
+	background-color: black;
+}
+
+#bg-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url('./assets/landing-bg.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center top;
 }
 
 #center {
@@ -57,8 +67,6 @@ html, body {
 	height: 100%;
 	display: flex;
 	align-items: center;
-	background: linear-gradient(90deg,#000000,transparent 10%,transparent 90%,#0a0a0c) top no-repeat,url('https://lolstatic-a.akamaihd.net/frontpage/apps/prod/year-in-review-2017/en_US/40a18ff561c9965f0d0b5b09d56c3583726b402a/assets/img/global/backdrops/landing-bg-1440w.jpg') top no-repeat;
-	background-size: 1440px auto,1440px auto;
 }
 
 #landing {
@@ -130,6 +138,28 @@ html, body {
 	background-color: transparent;
 	border: 1px solid #f0e6d2;
 	border-radius: 2px;
+}
+
+/* Animations */
+.blur {
+	animation: blur 0.5s linear forwards;
+	animation-delay: 0.75s;
+}
+
+@keyframes blur {
+	to {
+		filter: blur(5px);
+	}
+}
+
+.fadein {
+	animation: fadein 1.5s;
+}
+
+@keyframes fadein {
+	0%   { opacity: 0; }
+	55%  { opacity: 0; }
+	100% { opacity: 1; }
 }
 
 #stats {

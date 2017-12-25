@@ -4,8 +4,8 @@ const express = require("express");
 const app     = express();
 const comp    = require("compression");
 
-const riot = require("../riot");
-const fb = require("../db");
+const riot = require("./riot");
+const fb = require("./db");
 
 app.use(comp());
 
