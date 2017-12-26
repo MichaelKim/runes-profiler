@@ -1,103 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function getPercent(num, den) {
-	let value = Math.round(num / den * 100);
-	if (value > 1000) {
-		return (value / 1000).toFixed(1) + 'k';
-	}
-	return value;
-}
+import Keystone from './keystone.jsx';
 
 class Keystones extends React.Component {
 	constructor(props) {
 		super(props);
-		const data = this.props.data;
 
 		this.state = {
 			selectedTree: 0
 		};
-		this.selectTree = this.selectTree.bind(this);
 
-		const colors = [
-			'rgba(126, 101, 31, 0.6)',
-			'rgba(122, 5, 31, 0.6)',
-			'rgba(10, 15, 89, 0.6)',
-			'rgba(15, 97, 3, 0.6)',
-			'rgba(19, 95, 106, 0.6)'
-		];
+		this.keystonesTop = Runes.map((t, i) => 
+			<div id={t.name.toLowerCase() + '-button'} key={i} onClick={e => this.selectTree(e)}>
+				{t.name}
+			</div>
+		);
 
-		this.keystonesTop = [];
-		this.keystonesBox = [];
-
-		for (let i = 0; i < Runes.length; i++) {
-			const tree = Runes[i];
-			this.keystonesTop.push(
-				<div id={tree.name.toLowerCase() + '-button'} key={i} onClick={this.selectTree}>
-					{tree.name}
-				</div>
-			);
-
-			this.keystonesBox[i] = [];
-
-			for (let j = 0; j < tree.keystones.length; j++) {
-				const keystone = tree.keystones[j];
-				let info = <p>Not enough games played</p>
-				if (data.playerData[keystone.id] && data.playerData[keystone.id].games) {
-					const playerWinrate = getPercent(data.playerData[keystone.id].wins, data.playerData[keystone.id].games);
-					const globalWinrate = getPercent(data.globalData[keystone.id].wins, data.globalData[keystone.id].games);
-
-					let stats = [];
-					for (let k = 0; k < keystone.statsVars; k++) {
-						const playerStat = getPercent(data.playerData[keystone.id].stats[k], data.playerData[keystone.id].games);
-						const globalStat = getPercent(data.globalData[keystone.id].stats[k], data.globalData[keystone.id].games);
-
-						stats.push(
-							<tr key={k}>
-								<td>{playerStat}</td>
-								<td>{keystone.statsDesc[k]}</td>
-								<td>{globalStat}</td>
-							</tr>
-						);
-					}
-
-					info = (
-						<table>
-							<tbody>
-								<tr>
-									<th>You</th>
-									<th></th>
-									<th>Global</th>
-								</tr>
-								<tr>
-									<td>{playerWinrate + '%'}</td>
-									<td>Winrate</td>
-									<td>{globalWinrate + '%'}</td>
-								</tr>
-								{ stats }
-							</tbody>
-						</table>
-					);
-				}
-
-				this.keystonesBox[i].push(
-					<div className='keystone' style={{ backgroundColor: colors[i]}} key={j}>
-						<h2 className='keystone-name'>{keystone.name}</h2>
-						<img src={'../assets/runes/' + keystone.id + '.png'} className='keystone-image'/>
-						{ info }
-					</div>
-				);
-			}
-		}
+		this.keystonesBox = Runes.map((t, i) =>
+			t.keystones.map((k, j) =>
+				<Keystone
+					keystone={k}
+					color={colors[i]}
+					playerData={this.props.data.playerData[k.id]}
+					globalData={this.props.data.globalData[k.id]}
+					key={j}
+				/>
+			)
+		);
 	}
 
 	selectTree(e) {
 		let id = 0;
 		switch (e.target.id) {
-			case 'precision-button': id = 0; break;
-			case 'domination-button': id = 1; break;
-			case 'sorcery-button': id = 2; break;
-			case 'resolve-button': id = 3; break;
+			case 'precision-button':   id = 0; break;
+			case 'domination-button':  id = 1; break;
+			case 'sorcery-button':     id = 2; break;
+			case 'resolve-button':     id = 3; break;
 			case 'inspiration-button': id = 4; break;
 		}
 		this.setState({ selectedTree: id });
@@ -106,12 +45,8 @@ class Keystones extends React.Component {
 	render() {
 		return (
 			<div>
-				<div style={{
-					textAlign: 'center'
-				}}>
-					<h2 style={{
-						margin: '5px'
-					}}>KEYSTONES</h2>
+				<div style={{ textAlign: 'center' }}>
+					<h2 style={{ margin: '5px' }}>KEYSTONES</h2>
 				</div>
 				<div id="keystones">
 					<div id="keystones-top">
@@ -133,6 +68,16 @@ class Keystones extends React.Component {
 Keystones.propTypes = {
 	data: PropTypes.object.isRequired
 };
+
+module.exports = Keystones;
+
+const colors = [
+	'rgba(126, 101, 31, 0.6)',
+	'rgba(122, 5, 31, 0.6)',
+	'rgba(10, 15, 89, 0.6)',
+	'rgba(15, 97, 3, 0.6)',
+	'rgba(19, 95, 106, 0.6)'
+];
 
 const Runes = [
 	{
@@ -286,5 +231,3 @@ const Runes = [
 		]
 	}
 ];
-
-module.exports = Keystones;
