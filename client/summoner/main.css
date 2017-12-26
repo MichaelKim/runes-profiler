@@ -62,25 +62,40 @@ html, body {
 }
 
 
-.keystones {
+#keystones {
+	width: 800px;
+	box-sizing: border-box;
+	border: 3px solid #ab8f57;
+}
+
+#keystones-top {
 
 }
 
+#precision-button, #domination-button, #sorcery-button, #resolve-button, #inspiration-button {
+	width: 18.8%;
+	box-sizing: border-box;
+	border: 1px solid #241d19;
+	display: inline-block;
+	text-align: center;
+	background-color: #111318;
+	padding: 10px 0;
+	margin: 1% 0 1% 1%;
+}
+
+.keystone {
+	display: inline-block;
+	width: 28%;
+	margin-left: 4%;
+	text-align: center;
+	box-sizing: border-box;
+	border: 1px solid #241d19;
+}
 
 #stats {
 	margin: 200px auto 0 auto;
 }
 
-table, th, td {
-	display: none;
-	border: 1px solid white;
-	border-collapse: collapse;
-}
-
-th, td {
-    padding: 5px;
-    text-align: center;    
-}
 
 
 @keyframes spin {
