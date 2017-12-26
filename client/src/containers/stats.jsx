@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Profile from './profile.jsx';
-import Keystones from './keystones.jsx';
+import RunesDisplay from './runesdisplay.jsx';
 
 
-const Stats = ({ data }) => {
+const Stats = ({ data, onSelect }) => {
 	return (
 		<div id="center">
 			<div id="stats" className="fadein">
@@ -13,14 +13,18 @@ const Stats = ({ data }) => {
 					imageId={data.player.icon}
 					name={data.player.name}
 				/>
-				<Keystones data={data}/>
+				<RunesDisplay
+					data={data}
+					onSelect={onSelect}
+				/>
 			</div>
 		</div>
 	);
 }
 
 Stats.propTypes = {
-	data: PropTypes.object.isRequired
+	data: PropTypes.object.isRequired,
+	onSelect: PropTypes.func.isRequired
 };
 
 module.exports = Stats;

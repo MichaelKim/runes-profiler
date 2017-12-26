@@ -36,11 +36,11 @@ Riot Games API Challenge 2017 - Runes Reforged
 		- [ ] Popular runes (popular rune page?)
 		- [ ] Winrate per rune (highest winrate rune page?)
 		- [ ] Recommended rune page
-	- [ ] Store history of searches (cookies)
+	- [x] Store history of searches (cookies)
 	- [ ] Store favourite profiles (cookies)
 	- Basic profile
 		- [ ] Rank
-		- [ ] Summoner icon
+		- [x] Summoner icon
 		- [ ] Winrate
 		- [ ] Winrate per champion
 		- [ ] Match history

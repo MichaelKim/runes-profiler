@@ -1,75 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Keystone from './keystone.jsx';
+import PathSelector from './pathselector.jsx';
+import PathDisplay from './pathdisplay.jsx';
 
-class Keystones extends React.Component {
+class RunesDisplay extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			selectedTree: 0
+			selectedPath: 0
 		};
-
-		this.keystonesTop = Runes.map((t, i) => 
-			<div id={t.name.toLowerCase() + '-button'} key={i} onClick={e => this.selectTree(e)}>
-				{t.name}
-			</div>
-		);
-
-		this.keystonesBox = Runes.map((t, i) =>
-			t.keystones.map((k, j) =>
-				<Keystone
-					keystone={k}
-					color={colors[i]}
-					playerData={this.props.data.playerData[k.id]}
-					globalData={this.props.data.globalData[k.id]}
-					key={j}
-				/>
-			)
-		);
-	}
-
-	selectTree(e) {
-		let id = 0;
-		switch (e.target.id) {
-			case 'precision-button':   id = 0; break;
-			case 'domination-button':  id = 1; break;
-			case 'sorcery-button':     id = 2; break;
-			case 'resolve-button':     id = 3; break;
-			case 'inspiration-button': id = 4; break;
-		}
-		this.setState({ selectedTree: id });
 	}
 
 	render() {
 		return (
 			<div>
 				<div style={{ textAlign: 'center' }}>
-					<h2 style={{ margin: '5px' }}>KEYSTONES</h2>
+					<h2 style={{ margin: '5px' }}>Your Runes Reforged</h2>
 				</div>
-				<div id="keystones">
-					<div id="keystones-top">
-						{ this.keystonesTop }
-					</div>
-					{ this.keystonesBox.map((box, index) => (
-						<div className="keystones-box" key={index} style={{
-							opacity: this.state.selectedTree === index ? '1' : '0'
-						}}>
-							{box}
-						</div>
-					)) }
+				<div id="runes">
+					<PathSelector
+						pathNames={Runes.map(t => t.name)}
+						onSelect={i => {
+							this.setState({ selectedPath: i });
+							this.props.onSelect(i);
+						}}
+					/>
+					{
+						Runes.map((t, i) =>
+							<PathDisplay
+								tree={t}
+								data={this.props.data}
+								color={colors[i]}
+								selected={this.state.selectedPath === i}
+								key={i}
+							/>
+						)
+					}
 				</div>
 			</div>
 		);
 	}
 }
 
-Keystones.propTypes = {
-	data: PropTypes.object.isRequired
+RunesDisplay.propTypes = {
+	data: PropTypes.object.isRequired,
+	onSelect: PropTypes.func.isRequired
 };
 
-module.exports = Keystones;
+module.exports = RunesDisplay;
 
 const colors = [
 	'rgba(126, 101, 31, 0.6)',
@@ -82,7 +62,7 @@ const colors = [
 const Runes = [
 	{
 		name: 'Precision',
-		keystones: [
+		runes: [
 			{
 				name: 'Press the Attack',
 				id: 8005,
@@ -108,12 +88,84 @@ const Runes = [
 				statsDesc: [
 					"Total Healing"
 				]
+			},
+			{
+				name: 'Overheal',
+				id: 9101,
+				statsVars: 1,
+				statsDesc: [
+					"Total Shielding"
+				]
+			},
+			{
+				name: 'Triumph',
+				id: 9111,
+				statsVars: 1,
+				statsDesc: [
+					"Total Health Restored"
+				]
+			},
+			{
+				name: 'Presence of Mind',
+				id: 8009,
+				statsVars: 1,
+				statsDesc: [
+					"Total Mana Restored"
+				]
+			},
+			{
+				name: 'Legend: Alacrity',
+				id: 9104,
+				statsVars: 1,
+				statsDesc: [
+					"Time Completed"
+				]
+			},
+			{
+				name: 'Legend: Tenacity',
+				id: 9105,
+				statsVars: 1,
+				statsDesc: [
+					"Time Completed"
+				]
+			},
+			{
+				name: 'Legend: Bloodline',
+				id: 9103,
+				statsVars: 1,
+				statsDesc: [
+					"Time Completed"
+				]
+			},
+			{
+				name: 'Coup de Grace',
+				id: 8014,
+				statsVars: 1,
+				statsDesc: [
+					"Total Bonus Damage"
+				]
+			},
+			{
+				name: 'Cut Down',
+				id: 8017,
+				statsVars: 1,
+				statsDesc: [
+					"Total Bonus Damage"
+				]
+			},
+			{
+				name: 'Last Stand',
+				id: 8299,
+				statsVars: 1,
+				statsDesc: [
+					"Total Bonus Damage"
+				]
 			}
 		]
 	},
 	{
 		name: 'Domination',
-		keystones: [
+		runes: [
 			{
 				name: 'Electrocute',
 				id: 8112,
@@ -142,7 +194,7 @@ const Runes = [
 	},
 	{
 		name: 'Sorcery',
-		keystones: [
+		runes: [
 			{
 				name: 'Summon Aery',
 				id: 8214,
@@ -172,7 +224,7 @@ const Runes = [
 	},
 	{
 		name: 'Resolve',
-		keystones: [
+		runes: [
 			{
 				name: 'Grasp of the Undying',
 				id: 8437,
@@ -202,7 +254,7 @@ const Runes = [
 	},
 	{
 		name: 'Inspiration',
-		keystones: [
+		runes: [
 			{
 				name: 'Unsealed Spellbook',
 				id: 8326,

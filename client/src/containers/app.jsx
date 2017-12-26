@@ -10,7 +10,8 @@ class App extends React.Component {
 		super(props);
 		this.state = {
 			loaded: false,
-			data: {}
+			data: {},
+			selectedPath: -1
 		};
 	}
 
@@ -18,7 +19,8 @@ class App extends React.Component {
 		makeRequest('/test?name=' + this.props.name + '&region=' + this.props.region, (data) => {
 			this.setState({
 				loaded: true,
-				data: data
+				data: data,
+				selectedPath: 0
 			});
 		});
 	}
@@ -26,11 +28,14 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Background url='../assets/landing-bg.jpg' />
+				<Background index={this.state.selectedPath} />
 			    {
 			    	this.state.loaded ?
 			    	<div id="center">
-			    		<Stats data={this.state.data} />
+			    		<Stats
+			    			data={this.state.data}
+			    			onSelect={i => this.setState({ selectedPath: i})}
+			    		/>
 		    		</div> :
 		    		<Loader />
 		    	}
