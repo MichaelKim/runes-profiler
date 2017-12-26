@@ -99,6 +99,12 @@ html, body {
 	border-radius: 2px;
 }
 
+#invalid-name-box {
+	color: red;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
 /* Animations */
 .blur {
 	animation: blur 0.5s linear forwards;

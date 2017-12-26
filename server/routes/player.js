@@ -92,7 +92,8 @@ router.get('/', function (req, res) {
 					if (count >= matches.length) {
 						let finalData = {
 							player: {
-								name: player.name
+								name: player.name,
+								icon: player.profileIconId
 							},
 							playerData: playerData,
 							globalData: {}

@@ -10,7 +10,7 @@ const Stats = ({ data }) => {
 		<div id="center">
 			<div id="stats" className="fadein">
 				<Profile
-					image='../assets/profile-icon.png'
+					imageId={data.player.icon}
 					name={data.player.name}
 				/>
 				<Keystones data={data}/>

@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Profile = ({ image, name }) => {
+const Profile = ({ imageId, name }) => {
 	return (
 		<div className="profile">
-			<img className="profile-image" src={ image }></img>
+			<img className="profile-image" src={ '../assets/profileicon/' + imageId + '.png' }></img>
 			<h1 className="profile-name">{ name }</h1>
 		</div>	
 	);
 }
 
 Profile.propTypes = {
-	image: PropTypes.string.isRequired,
+	imageId: PropTypes.number.isRequired,
 	name: PropTypes.string.isRequired
 };
 
