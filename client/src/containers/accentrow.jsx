@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const AccentRow = ({ left, mid, right, bold }) => (
 	<tr>
-		<td style={ bold ? { fontWeight: '700' } : {}}>{left}</td>
+		{left ? <td style={ bold ? { fontWeight: '700' } : {}}>{left}</td> : null}
 		<td>{mid}</td>
 		<td style={ !bold ? { fontWeight: '700' } : {}}>{right}</td>
 	</tr>

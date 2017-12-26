@@ -6,7 +6,7 @@ import AccentRow from './accentrow.jsx';
 const Keystone = ({ keystone, color, playerData, globalData }) => {
 	let info = <p>Not enough games played</p>;
 
-	if (playerData && playerData.games && globalData) {
+	if (playerData && playerData.games) {
 		const playerWinrate = playerData.wins / playerData.games * 100;
 		const globalWinrate = globalData.wins / globalData.games * 100;
 
@@ -42,6 +42,43 @@ const Keystone = ({ keystone, color, playerData, globalData }) => {
 					{ stats }
 				</tbody>
 			</table>
+		);
+	}
+	else if (globalData && globalData.games) {
+		const globalWinrate = globalData.wins / globalData.games * 100;
+
+		const stats = keystone.statsDesc.map((desc, i) => {
+			const globalStat = globalData.stats[i] / globalData.games;
+
+			return (
+				<AccentRow
+					key={i}
+					left=""
+					mid={desc}
+					right={+globalStat.toFixed(2)}
+					bold={true}
+				/>
+			);
+		});
+
+		info = (
+			<div>
+				<p>Play more games with <br /> {keystone.name}!</p>
+				<table>
+					<tbody>
+						<tr>
+							<th colspan="2">Global</th>
+						</tr>
+						<AccentRow
+							left=""
+							mid='Winrate'
+							right={+globalWinrate.toFixed(2) + '%'}
+							bold={true}
+						/>
+						{ stats }
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 
