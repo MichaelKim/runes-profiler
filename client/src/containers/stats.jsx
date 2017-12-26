@@ -3,7 +3,54 @@ import PropTypes from 'prop-types';
 
 import Profile from './profile.jsx';
 
+const Runes = [
+	{
+		name: 'Precision',
+		keystones: [
+			{
+				name: 'Press the Attack',
+				id: 8005
+			},
+			{
+				name: 'Lethal Tempo',
+				id: 8008
+			},
+			{
+				name: 'Fleet Footwork',
+				id: 8021
+			}
+		]
+	},
+	{
+		name: 'Domination',
+		keystones: [
+			{
+				name: 'Electrocute',
+				id: 8112
+			},
+			{
+				name: 'Predator',
+				id: 8124
+			},
+			{
+				name: 'Dark Harvest',
+				id: 8128
+			}
+		]
+	}
+];
+
 const Stats = ({ data }) => {
+	const keystones = Runes.reduce((acc, tree) => {
+		return acc.concat(
+			<h3>{ tree.name }</h3>,
+			tree.keystones.reduce((acc, rune) => {
+				if (data.playerData[rune.id]) return acc.concat(<h4>{ rune.name }</h4>);
+				return acc;
+			}, [])
+		);
+	}, []);
+
 	return (
 		<div id="center">
 			<div id="stats" className="fadein">
@@ -12,22 +59,7 @@ const Stats = ({ data }) => {
 					name={data.player.name}
 				/>
 				<h2>Keystones</h2>
-					<div class="keystones">
-					<h3>Precision</h3>
-					{
-						data.playerData[8005] ?
-						<div>
-							<h4>Press the Attack</h4>
-						</div> :
-						null
-					}
-					<h4>Lethal Tempo</h4>
-					<h4>Fleet Footwork</h4>
-					<h3>Dominiation</h3>
-					<h3>Sorcery</h3>
-					<h3>Resolve</h3>
-					<h3>Inspiration</h3>
-				</div>
+				{ keystones }
 			</div>
 		</div>
 	);
