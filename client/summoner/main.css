@@ -44,9 +44,83 @@ html, body {
     animation: spin 2s linear infinite;
 }
 
-.profile {
+#stats {
+	margin: 70px auto 0 auto;
+}
+
+#stats-top {
+	position: relative;
 	padding: 5px;
 	border-bottom: 2px solid #f0e6d2;
+}
+
+.profile {
+	display: inline;
+}
+
+#input-box {
+	position: absolute;
+	top: 0;
+	right: 0;
+	max-width: 600px;
+	height: 50px;
+	margin: 0 auto;
+	border-bottom: 1px solid #f0e6d2;
+}
+
+#summoner-name-input {
+	display: block;
+	width: 100%;
+	padding: 15px 150px 15px 15px;
+	font-size: 20px;
+	background: none;
+	border: none;
+	box-sizing: border-box;
+	outline: none;
+	color: #f0e6d2;
+}
+
+#summoner-name-input::placeholder {
+	color: darkgrey;
+}
+
+#region-select {
+	position: absolute;
+	top: 0;
+	right: 50px;
+	margin: 10px 10px 0 0;
+	height: 30px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#region-select option {
+	color: black;
+}
+
+#search-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 10px 10px 0 0;
+	height: 30px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#invalid-name-box {
+	position: absolute;
+	top: -5px;
+	left: 50px;
+	color: red;
+	opacity: 0;
+	transition: opacity 0.5s;
 }
 
 .profile-image {
@@ -108,9 +182,6 @@ html, body {
 	width: 50px;
 	border-radius: 25px;
 	background: radial-gradient(black 25%, transparent 80%);
-}
-#stats {
-	margin: 70px auto 0 auto;
 }
 
 table {

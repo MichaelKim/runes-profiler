@@ -31,12 +31,10 @@ class App extends React.Component {
 				<Background index={this.state.selectedPath} />
 			    {
 			    	this.state.loaded ?
-			    	<div id="center">
-			    		<Stats
-			    			data={this.state.data}
-			    			onSelect={i => this.setState({ selectedPath: i})}
-			    		/>
-		    		</div> :
+		    		<Stats
+		    			data={this.state.data}
+		    			onSelect={i => this.setState({ selectedPath: i})}
+		    		/> :
 		    		<Loader />
 		    	}
 		    </div>
