@@ -6,7 +6,7 @@ import AccentRow from './accentrow.jsx';
 const RuneDisplay = ({ rune, color, playerData, globalData }) => {
 	let info = <p style={{ margin: '0' }}><i>Not enough games played</i></p>;
 
-	if (playerData && playerData.games) {
+	if (playerData && playerData.games && globalData && globalData.games) {
 		const playerWinrate = playerData.wins / playerData.games * 100;
 		const globalWinrate = globalData.wins / globalData.games * 100;
 

@@ -3,8 +3,15 @@ Riot Games API Challenge 2017 - Runes Reforged
 
 # Plan
 
+## Things to Do
+- Change `/player` endpoint to POST
+	- Add `bodyparser` and use url encoded middleware
+- Add Disclaimer
+	- "[The title of your Project] isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc."
+- Come up with a title
+- Refactor `runedisplay.jsx`
+
 ## Questions
-- Single page app or multiple?
 
 ## Goals
 - Compare a player's runes usage with averages (other players)
@@ -30,7 +37,7 @@ Riot Games API Challenge 2017 - Runes Reforged
 		- [x] Average stats per rune
 		- [ ] Winrates per rune & champion
 		- [ ] Average stats per rune & champion
-	- [ ] Cache summoner data into database & update profile button
+	- [x] Cache summoner data into database & update profile button (no need)
 - Want to add
 	- Champion stats
 		- [ ] Popular runes (popular rune page?)

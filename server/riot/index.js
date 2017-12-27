@@ -3,6 +3,7 @@ const XRegExp = require("xregexp");
 const nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
 
 function query(path, region, callback) {
+	console.log('Querying riot:', path, region);
 	https.get('https://' + region + '.api.riotgames.com' + path + '?api_key=' + process.env.RIOT_API, (res) => {
 		let rawData = '';
 
@@ -58,6 +59,53 @@ function validName(summonerName) {
 	return XRegExp.test(summonerName, nameRegex);
 }
 
+function getPlayerData(accountId, region, callback) {
+	getMatches(accountId, region, (err, matches) => {
+		if (err) {
+			callback(err, null);
+			return;
+		}
+
+		let count = 0;
+		let playerData = {};
+
+		matches.forEach((m, i) => {
+			setTimeout(() => {
+				getMatch(m.gameId, region, (err, match) => {
+					count += 1;
+
+					console.log(count, matches.length);
+
+					if (!err) {
+						const playerId = match.participantIdentities.find((p) => p.player.accountId === accountId).participantId;
+						const playerPart = match.participants.find((p) => p.participantId === playerId);
+
+						for (let i = 0; i < 6; i++) {
+							if (!playerData[playerPart.stats['perk' + i]]) {
+								playerData[playerPart.stats['perk' + i]] = {
+									wins: 0,
+									games: 0,
+									stats: [0, 0, 0]
+								};
+							}
+
+							if (playerPart.stats.win) playerData[playerPart.stats['perk' + i]].wins++;
+							playerData[playerPart.stats['perk' + i]].games++;
+							for (let j = 0; j < 3; j++) {
+								playerData[playerPart.stats['perk' + i]].stats[j] += playerPart.stats['perk' + i + 'Var' + (j+1)];	
+							}
+						}
+					}
+
+					if (count >= matches.length) {
+						callback(null, playerData);
+					}
+				});
+			}, 50 * i);
+		});
+	});
+}
+
 function getRegionEndpoint(region) {
 	return {
 		'br': 'br1',
@@ -82,5 +130,6 @@ module.exports = {
 	getMatches,
 	getMatch,
 	validName,
+	getPlayerData,
 	getRegionEndpoint
 };

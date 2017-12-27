@@ -49,20 +49,66 @@ html, body {
 }
 
 #stats-top {
+	display: inline-block;
 	position: relative;
+	width: 100%;
 	padding: 5px;
 	border-bottom: 2px solid #f0e6d2;
+	box-sizing: border-box;
 }
 
 .profile {
-	display: inline;
+	float: left;
+	margin-top: 12px;
+}
+
+.profile-image {
+	width: 50px;
+	height: 50px;
+	border-radius: 2px;
+}
+
+.profile-name {
+	float: right;
+	margin: 4px 0 0 10px;
+}
+
+.update-box {
+	display: inline-block;
+	position: relative;
+	margin-top: 15px;
+	margin-left: 13px;
+}
+
+.update-button {
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 10px 15px;
+	background-color: black;
+	border: 0;
+	color: #f0e6d2;
+}
+
+.last-updated {
+	position: relative;
+	display: inline-block;
+	top: 5px;
+	margin: 0;
+	font-size: 12px;
+}
+
+.invalid-update {
+	position: absolute;
+	transition: opacity 0.5s;
+	color: red;
+	margin: 0;
+	font-size: 14px;
+	left: 5px;
 }
 
 #input-box {
-	position: absolute;
-	top: 0;
-	right: 0;
-	max-width: 600px;
+	float: right;
+	max-width: 300px;
 	height: 50px;
 	margin: 0 auto;
 	border-bottom: 1px solid #f0e6d2;
@@ -115,26 +161,12 @@ html, body {
 }
 
 #invalid-name-box {
-	position: absolute;
-	top: -5px;
+	position: relative;
+	top: -3px;
 	left: 50px;
 	color: red;
-	opacity: 0;
+	font-size: 14px;
 	transition: opacity 0.5s;
-}
-
-.profile-image {
-	display: inline;
-	width: 50px;
-	height: 50px;
-	border-radius: 2px;
-}
-
-.profile-name {
-	display: inline;
-	position: relative;
-	top: -11px;
-	left: 10px;
 }
 
 

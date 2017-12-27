@@ -40,7 +40,6 @@ class Search extends React.Component {
 			this.setState({ invalid: true });
 			setTimeout(() => {
 				this.setState({ invalid: false });
-				invalidNameBox.style.opacity = 0;
 			}, 2000);
 		}
 	}
