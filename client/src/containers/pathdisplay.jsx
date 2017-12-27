@@ -7,12 +7,15 @@ const PathDisplay = ({ tree, data, color, selected }) => {
 	return (
 		<div
 			className='path-display'
-			style={{ opacity: selected ? '1' : '0' }}
+			style={{
+				opacity: selected ? '1' : '0',
+				visibility: selected ? 'visible' : 'hidden'
+			}}
 		>
 		{
 			tree.runes.map((r, i) => (
 				<RuneDisplay
-					keystone={r}
+					rune={r}
 					color={color}
 					playerData={data.playerData[r.id]}
 					globalData={data.globalData[r.id]}

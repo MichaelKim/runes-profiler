@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 
 import AccentRow from './accentrow.jsx';
 
-const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
-	let info = <p>Not enough games played</p>;
+const RuneDisplay = ({ rune, color, playerData, globalData }) => {
+	let info = <p style={{ margin: '0' }}><i>Not enough games played</i></p>;
 
 	if (playerData && playerData.games) {
 		const playerWinrate = playerData.wins / playerData.games * 100;
 		const globalWinrate = globalData.wins / globalData.games * 100;
 
-		const stats = keystone.statsDesc.map((desc, i) => {
-			if (desc === 'Time Completed') {
+		const stats = rune.statsDesc.map((desc, i) => {
+			if (desc === 'Time Completed' || desc === 'Boots Arrival Time') {
 				const playerStat = Math.round((playerData.stats[i] * 60 + playerData.stats[i+1]) / playerData.games);
 				const globalStat = Math.round((globalData.stats[i] * 60 + globalData.stats[i+1]) / globalData.games);
 
@@ -21,7 +21,7 @@ const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
 						left={Math.round(playerStat / 60) + ':' + (playerStat % 60).toString().padStart(2, '0')}
 						mid={desc}
 						right={Math.round(globalStat / 60) + ':' + (globalStat % 60).toString().padStart(2, '0')}
-						bold={playerStat > globalStat}
+						bold={playerStat < globalStat}
 					/>
 				);
 			}
@@ -47,7 +47,7 @@ const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
 				<tbody>
 					<tr>
 						<th>You</th>
-						<th></th>
+						<th>Average</th>
 						<th>Global</th>
 					</tr>
 					<AccentRow
@@ -64,8 +64,8 @@ const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
 	else if (globalData && globalData.games) {
 		const globalWinrate = globalData.wins / globalData.games * 100;
 
-		const stats = keystone.statsDesc.map((desc, i) => {
-			if (desc === 'Time Completed') {
+		const stats = rune.statsDesc.map((desc, i) => {
+			if (desc === 'Time Completed' || desc === 'Boots Arrival Time') {
 				const globalStat = Math.round((globalData.stats[i] * 60 + globalData.stats[i+1]) / globalData.games);
 
 				return (
@@ -95,11 +95,11 @@ const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
 
 		info = (
 			<div>
-				<p>Play games with {keystone.name}!</p>
+				<p style={{ margin: '0' }}><i>Play games with {rune.name}!</i></p>
 				<table>
 					<tbody>
 						<tr>
-							<th colSpan="2">Global</th>
+							<th colSpan="2">Global Average</th>
 						</tr>
 						<AccentRow
 							left=""
@@ -115,16 +115,16 @@ const RuneDisplay = ({ keystone, color, playerData, globalData }) => {
 	}
 
 	return (
-		<div className='keystone' style={{ backgroundColor: color}}>
-			<h2 className='keystone-name'>{keystone.name}</h2>
-			<img src={'../assets/runes/' + keystone.id + '.png'} className='keystone-image'/>
+		<div className='rune' style={{ backgroundColor: color}}>
+			<h2 className='rune-name'>{rune.name}</h2>
+			<img src={'../assets/runes/' + rune.id + '.png'} className='rune-image'/>
 			{ info }
 		</div>
 	);
 };
 
 RuneDisplay.propTypes = {
-	keystone: PropTypes.object.isRequired,
+	rune: PropTypes.object.isRequired,
 	color: PropTypes.string.isRequired,
 	playerData: PropTypes.object,
 	globalData: PropTypes.object

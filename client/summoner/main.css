@@ -160,11 +160,11 @@ html, body {
 .path-display {
 	position: absolute;
 	width: 100%;
-	transition: opacity 0.5s;
+	transition: opacity 0.5s, visibility 0.5s;
 }
 
-.keystone {
-	display: inline-block;
+.rune {
+	float: left;
 	width: 28%;
 	height: 275px;
 	margin-left: 4%;
@@ -174,11 +174,11 @@ html, body {
 	border: 1px solid #241d19;
 }
 
-.keystone-name {
+.rune-name {
 	margin: 5px 0;
 }
 
-.keystone-image {
+.rune-image {
 	width: 50px;
 	border-radius: 25px;
 	background: radial-gradient(black 25%, transparent 80%);
@@ -200,7 +200,7 @@ td:nth-of-type(2), th:nth-of-type(2) {
 }
 
 tr {
-	height: 30px;
+	height: 27px;
 }
 
 
