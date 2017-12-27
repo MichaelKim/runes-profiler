@@ -15,13 +15,25 @@ const RuneDisplay = ({ rune, color, playerData, globalData }) => {
 				const playerStat = Math.round((playerData.stats[i] * 60 + playerData.stats[i+1]) / playerData.games);
 				const globalStat = Math.round((globalData.stats[i] * 60 + globalData.stats[i+1]) / globalData.games);
 
+				if (playerStat > 0) {
+					return (
+						<AccentRow
+							key={i}
+							left={Math.round(playerStat / 60) + ':' + (playerStat % 60).toString().padStart(2, '0')}
+							mid={desc}
+							right={Math.round(globalStat / 60) + ':' + (globalStat % 60).toString().padStart(2, '0')}
+							bold={playerStat < globalStat}
+						/>
+					);
+				}
+
 				return (
 					<AccentRow
 						key={i}
-						left={Math.round(playerStat / 60) + ':' + (playerStat % 60).toString().padStart(2, '0')}
+						left={'N/A'}
 						mid={desc}
 						right={Math.round(globalStat / 60) + ':' + (globalStat % 60).toString().padStart(2, '0')}
-						bold={playerStat < globalStat}
+						bold={false}
 					/>
 				);
 			}

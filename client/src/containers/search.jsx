@@ -6,7 +6,7 @@ class Search extends React.Component {
 		this.nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
 		this.nameHistory = Cookies.get('hist') || '';
 		this.state = {
-			name: '',
+			name: this.nameHistory,
 			region: 'na',
 			invalid: false
 		};
@@ -51,7 +51,6 @@ class Search extends React.Component {
 				<input
 					id="summoner-name-input"
 					placeholder={this.nameHistory || "Summmoner Name"}
-					value={this.state.name}
 					onChange={e => this.onInput(e)}
 					onKeyPress={e => this.runOnEnter(e)}
 				/>
