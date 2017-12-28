@@ -105,6 +105,18 @@ html, body {
 	transition: opacity 0.5s;
 }
 
+.footer {
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	width: 100%;
+}
+
+.disclaimer {
+	width: 70%;
+	margin: 0 auto;
+	font-size: 0.8em;
+}
 /* Animations */
 .blur {
 	animation: blur 0.5s linear forwards;

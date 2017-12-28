@@ -45,32 +45,52 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
+	    	<React.Fragment>
 				<Background index={this.state.selectedPath} />
 			    {
 			    	this.state.loaded ?
-			    	<div id="center">
-						<div id="stats" className="fadein">
-							<div id="stats-top">
-								<Profile
-									imageId={this.state.data.profileData.icon}
-									name={this.state.data.profileData.name}
-								/>
-								<Update
-									onUpdate={() => this.updateProfile()}
-									lastUpdated={this.state.data.profileData.lastUpdated}
-								/>
+			    	<React.Fragment>
+						<div className='header-box'>
+							<div className='header'>
+								<a className='logo' href='http://localhost:5000'>Runes Profiler</a>
 								<Search />
 							</div>
-							<RunesDisplay
-								data={this.state.data}
-		    					onSelect={i => this.setState({ selectedPath: i})}
-							/>
 						</div>
-					</div> :
+						<div className='menu-box'>
+							<div className='menu'>
+								<div className='menu-item'>
+									<a href='http://localhost:5000'>Summoner</a>
+								</div>
+								<div className='menu-item'>
+									<a href='http://localhost:5000'>Champions</a>
+								</div>
+								<div className='menu-item'>
+									<a href='http://localhost:5000'>Statistics</a>
+								</div>
+							</div>
+						</div>
+				    	<div id='center'>
+							<div id='stats' className='fadein'>
+								<div id='stats-top'>
+									<Profile
+										imageId={this.state.data.profileData.icon}
+										name={this.state.data.profileData.name}
+									/>
+									<Update
+										onUpdate={() => this.updateProfile()}
+										lastUpdated={this.state.data.profileData.lastUpdated}
+									/>
+								</div>
+								<RunesDisplay
+									data={this.state.data}
+			    					onSelect={i => this.setState({ selectedPath: i})}
+								/>
+							</div>
+						</div>
+		    		</React.Fragment> :
 		    		<Loader />
 		    	}
-		    </div>
+		    </React.Fragment>
 		);
 	}
 }

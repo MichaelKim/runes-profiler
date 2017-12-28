@@ -23,11 +23,57 @@ html, body {
 	transition: opacity 0.5s;
 }
 
-#center {
-	position: absolute;
+.header-box {
+	position: relative;
 	width: 100%;
-	height: 100%;
+    background-color: #121212;
+    border-bottom: 2px solid #262626;
+}
+
+.header {
+	margin: 0 auto;
+	padding-top: 12px;
+	padding-bottom: 12px;
+    max-width: 1300px;
+}
+
+.logo {
+	display: inline-block;
+	margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    outline: none;
+    color: #f0e6d2;
+}
+
+.menu-box {
+	position: relative;
+	width: 100%;
+    background-color: #121212;
+    border-bottom: 2px solid #ab8f57;
+}
+
+.menu {
+	margin: 0 auto;
+    max-width: 1300px;
+}
+
+.menu-item {
+	display: inline-block;
+	padding: 10px;
+}
+
+.menu-item a {
+    color: #73a1cb;
+    text-decoration: none;
+    outline: none;
+}
+
+#center {
+	position: relative;
 	display: flex;
+	width: 100%;
 }
 
 .loader {
@@ -45,7 +91,7 @@ html, body {
 }
 
 #stats {
-	margin: 70px auto 0 auto;
+	margin: 0 auto;
 }
 
 #stats-top {
@@ -107,9 +153,10 @@ html, body {
 }
 
 #input-box {
+	position: relative;
 	float: right;
 	max-width: 300px;
-	height: 50px;
+	height: 30px;
 	margin: 0 auto;
 	border-bottom: 1px solid #f0e6d2;
 }
@@ -117,7 +164,7 @@ html, body {
 #summoner-name-input {
 	display: block;
 	width: 100%;
-	padding: 15px 150px 15px 15px;
+	padding: 0 150px 0 15px;
 	font-size: 20px;
 	background: none;
 	border: none;
@@ -134,8 +181,8 @@ html, body {
 	position: absolute;
 	top: 0;
 	right: 50px;
-	margin: 10px 10px 0 0;
-	height: 30px;
+	margin: 0 10px 0 0;
+	height: 25px;
 	cursor: pointer;
 	color: #f0e6d2;
 	background-color: transparent;
@@ -151,8 +198,8 @@ html, body {
 	position: absolute;
 	top: 0;
 	right: 0;
-	margin: 10px 10px 0 0;
-	height: 30px;
+	margin: 0 10px 0 0;
+	height: 25px;
 	cursor: pointer;
 	color: #f0e6d2;
 	background-color: transparent;
@@ -187,6 +234,7 @@ html, body {
 	background-color: #111318;
 	padding: 10px 0;
 	margin: 1% 0 1% 1%;
+	cursor: pointer;
 }
 
 .path-display {
