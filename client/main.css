@@ -107,7 +107,7 @@ html, body {
 
 .footer {
 	position: absolute;
-	bottom: 0;
+	bottom: 10px;
 	text-align: center;
 	width: 100%;
 }
@@ -117,6 +117,7 @@ html, body {
 	margin: 0 auto;
 	font-size: 0.8em;
 }
+
 /* Animations */
 .blur {
 	animation: blur 0.5s linear forwards;
