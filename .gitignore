@@ -58,5 +58,6 @@ typings/
 .env
 
 data/
-client/summoner/main.js
-client/summoner/main.js.map
+main.js
+main.js.map
+public/assets/*

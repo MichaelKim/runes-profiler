@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Background from './background.jsx';
-import Loader from './loader.jsx';
-import Profile from './profile.jsx';
-import Update from './update.jsx';
-import Search from './search.jsx';
-import RunesDisplay from './runesdisplay.jsx';
+import Background from '../containers/background.jsx';
+import Header from '../containers/header.jsx';
+import Footer from '../containers/footer.jsx';
+import Loader from '../containers/loader.jsx';
+import Profile from '../containers/profile.jsx';
+import Update from '../containers/update.jsx';
+import RunesDisplay from '../containers/runesdisplay.jsx';
 
 class App extends React.Component {
 	constructor(props) {
@@ -17,9 +18,7 @@ class App extends React.Component {
 			selectedPath: -1,
 			showUpdateError: false
 		};
-	}
 
-	componentDidMount() {
 		makeRequest('/player?name=' + this.props.name + '&region=' + this.props.region, (data) => {
 			this.setState({
 				loaded: true,
@@ -50,25 +49,7 @@ class App extends React.Component {
 			    {
 			    	this.state.loaded ?
 			    	<React.Fragment>
-						<div className='header-box'>
-							<div className='header'>
-								<a className='logo' href='http://localhost:5000'>Runes Profiler</a>
-								<Search />
-							</div>
-						</div>
-						<div className='menu-box'>
-							<div className='menu'>
-								<div className='menu-item'>
-									<a href='http://localhost:5000'>Summoner</a>
-								</div>
-								<div className='menu-item'>
-									<a href='http://localhost:5000'>Champions</a>
-								</div>
-								<div className='menu-item'>
-									<a href='http://localhost:5000'>Statistics</a>
-								</div>
-							</div>
-						</div>
+						<Header />
 				    	<div id='center'>
 							<div id='stats' className='fadein'>
 								<div id='stats-top'>
@@ -90,9 +71,7 @@ class App extends React.Component {
 		    		</React.Fragment> :
 		    		<Loader />
 		    	}
-		    	<div className='footer'>
-					<p className='disclaimer'>Runes Profiler isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.<br/>League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
-				</div>
+		    	<Footer />
 		    </React.Fragment>
 		);
 	}

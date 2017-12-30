@@ -2,17 +2,21 @@ let path = require('path');
 let webpack = require('webpack');
 
 const config = {
-    entry: './client/src/index.jsx',
+    entry: {
+        './public/main': './client/index/index.jsx',
+        './public/summoner/main': './client/summoner/index.jsx',
+        './public/champion/main': './client/champion/index.jsx'
+    },
     output: {
-        path: path.resolve(__dirname, './client/summoner'),
-        filename: 'main.js'
+        path: path.resolve(__dirname),
+        filename: '[name].js'
     },
     module: {
         loaders: [
             {
                 test: /.jsx?$/,
                 loader: 'babel-loader',
-                include: [path.resolve(__dirname, 'client/src')],
+                include: [path.resolve(__dirname, 'client')],
                 query: {
                     presets: ['env', 'react']
                 }

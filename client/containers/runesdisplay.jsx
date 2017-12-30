@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PathSelector from './pathselector.jsx';
 import PathDisplay from './pathdisplay.jsx';
 
-import Runes from '../../assets/runes.json';
+import Runes from './runes.json';
 
 class RunesDisplay extends React.Component {
 	constructor(props) {

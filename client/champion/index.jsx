@@ -1,12 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from './containers/app.jsx'
 
 render(
-	<App
-		name={getQueryVariable('name')}
-		region={getQueryVariable('region')}	
-	/>,
+	<p>Hi</p>,
     document.getElementById('root')
 );
 

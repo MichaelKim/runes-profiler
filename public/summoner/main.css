@@ -1,0 +1,319 @@
+* {
+	font-family: Beaufort, serif;
+}
+
+html, body {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	color: #f0e6d2;
+	background-color: black;
+}
+
+.bg-image {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	filter: blur(10px);
+	transition: opacity 0.5s;
+}
+
+.header-box {
+	position: relative;
+	width: 100%;
+    background-color: #121212;
+    border-bottom: 2px solid #262626;
+}
+
+.header {
+	margin: 0 auto;
+	padding-top: 12px;
+	padding-bottom: 12px;
+    max-width: 1300px;
+}
+
+.logo {
+	display: inline-block;
+	margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    outline: none;
+    color: #f0e6d2;
+}
+
+.menu-box {
+	position: relative;
+	width: 100%;
+    background-color: #121212;
+    border-bottom: 2px solid #ab8f57;
+}
+
+.menu {
+	margin: 0 auto;
+    max-width: 1300px;
+}
+
+.menu-item {
+	display: inline-block;
+	padding: 10px;
+}
+
+.menu-item a {
+    color: #73a1cb;
+    text-decoration: none;
+    outline: none;
+}
+
+#center {
+	position: relative;
+	display: flex;
+	width: 100%;
+}
+
+.loader {
+	position: fixed;
+	top: calc(50% - 60px);
+	left: calc(50% - 60px);
+	margin: 0 auto;
+    border: 5px solid transparent;
+    border-top: 5px solid #ab8f57;
+    border-bottom: 5px solid #ab8f57;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+#stats {
+	margin: 0 auto;
+}
+
+#stats-top {
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding: 5px;
+	border-bottom: 2px solid #f0e6d2;
+	box-sizing: border-box;
+}
+
+.profile {
+	float: left;
+	margin-top: 12px;
+}
+
+.profile-image {
+	width: 50px;
+	height: 50px;
+	border-radius: 2px;
+}
+
+.profile-name {
+	float: right;
+	margin: 4px 0 0 10px;
+}
+
+.update-box {
+	display: inline-block;
+	position: relative;
+	margin-top: 15px;
+	margin-left: 13px;
+}
+
+.update-button {
+	display: inline-block;
+	margin: 0 10px 0 0;
+	padding: 10px 15px;
+	background-color: black;
+	border: 0;
+	color: #f0e6d2;
+}
+
+.last-updated {
+	position: relative;
+	display: inline-block;
+	top: 5px;
+	margin: 0;
+	font-size: 12px;
+}
+
+.invalid-update {
+	position: absolute;
+	transition: opacity 0.5s;
+	color: red;
+	margin: 0;
+	font-size: 14px;
+	left: 5px;
+}
+
+#input-box {
+	position: relative;
+	float: right;
+	max-width: 300px;
+	height: 30px;
+	margin: 0 auto;
+	border-bottom: 1px solid #f0e6d2;
+}
+
+#summoner-name-input {
+	display: block;
+	width: 100%;
+	padding: 0 150px 0 15px;
+	font-size: 20px;
+	background: none;
+	border: none;
+	box-sizing: border-box;
+	outline: none;
+	color: #f0e6d2;
+}
+
+#summoner-name-input::placeholder {
+	color: darkgrey;
+}
+
+#region-select {
+	position: absolute;
+	top: 0;
+	right: 50px;
+	margin: 0 10px 0 0;
+	height: 25px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#region-select option {
+	color: black;
+}
+
+#search-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0 10px 0 0;
+	height: 25px;
+	cursor: pointer;
+	color: #f0e6d2;
+	background-color: transparent;
+	border: 1px solid #f0e6d2;
+	border-radius: 2px;
+}
+
+#invalid-name-box {
+	position: relative;
+	top: -3px;
+	left: 50px;
+	color: red;
+	font-size: 14px;
+	transition: opacity 0.5s;
+}
+
+
+#runes {
+	position: relative;
+	width: 800px;
+	height: 1200px;
+	margin-bottom: 70px;
+	border: 3px solid #ab8f57;
+}
+
+#precision-button, #domination-button, #sorcery-button, #resolve-button, #inspiration-button {
+	width: 18.8%;
+	box-sizing: border-box;
+	border: 1px solid #241d19;
+	display: inline-block;
+	text-align: center;
+	background-color: #111318;
+	padding: 10px 0;
+	margin: 1% 0 1% 1%;
+	cursor: pointer;
+}
+
+.path-display {
+	position: absolute;
+	width: 100%;
+	transition: opacity 0.5s, visibility 0.5s;
+}
+
+.rune {
+	float: left;
+	width: 28%;
+	height: 275px;
+	margin-left: 4%;
+	margin-bottom: 1%;
+	text-align: center;
+	box-sizing: border-box;
+	border: 1px solid #241d19;
+}
+
+.rune-name {
+	margin: 5px 0;
+}
+
+.rune-image {
+	width: 50px;
+	border-radius: 25px;
+	background: radial-gradient(black 25%, transparent 80%);
+}
+
+table {
+	margin: 0 auto;
+	padding-bottom: 5px;
+}
+
+.keystone p {
+	display: table;
+	margin: 0 auto;
+}
+
+td:nth-of-type(2), th:nth-of-type(2) {
+	max-width: 100px;
+	word-wrap: break-word;
+}
+
+tr {
+	height: 27px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 10px;
+	text-align: center;
+	width: 100%;
+}
+
+.disclaimer {
+	width: 70%;
+	margin: 0 auto;
+	font-size: 0.8em;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fadein {
+	animation: fadein 1.5s;
+}
+
+@keyframes fadein {
+	0%   { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+.fadeout {
+	animation: fadeout 1.5s;
+}
+
+@keyframes fadeout {
+	0%   { opacity: 1; }
+	100% { opacity: 0; }
+}

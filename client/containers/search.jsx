@@ -1,9 +1,11 @@
 import React from 'react';
+import XRegExp from 'xregexp';
+import Cookies from 'js-cookie';
 
 class Search extends React.Component {
 	constructor(props) {
 		super(props);
-		this.nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
+		this.nameRegex = XRegExp('^[0-9\\p{L} _\\.]+$');
 		this.nameHistory = Cookies.get('hist') || '';
 		this.state = {
 			name: this.nameHistory,

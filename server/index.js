@@ -11,7 +11,7 @@ app.use(comp());
 // 	next();
 // });
 
-app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + '/../public'));
 
 app.use('/', require('./routes'));
 
