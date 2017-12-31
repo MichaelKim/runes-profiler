@@ -125,30 +125,12 @@ html, body {
 	margin-left: 13px;
 }
 
-.update-button {
-	display: inline-block;
-	margin: 0 10px 0 0;
-	padding: 10px 15px;
-	background-color: black;
-	border: 0;
-	color: #f0e6d2;
-}
-
 .last-updated {
 	position: relative;
 	display: inline-block;
 	top: 5px;
 	margin: 0;
 	font-size: 12px;
-}
-
-.invalid-update {
-	position: absolute;
-	transition: opacity 0.5s;
-	color: red;
-	margin: 0;
-	font-size: 14px;
-	left: 5px;
 }
 
 #input-box {
