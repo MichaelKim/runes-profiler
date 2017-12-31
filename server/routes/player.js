@@ -24,7 +24,7 @@ router.get('/', function (req, res) {
 	stripName = summonerName.replace(/\s+/g, '').toLowerCase();
 
 	db.getPlayer(stripName, region, player => {
-		if (player) {
+		if (player && Date.now() - player.lastUpdated < 1000 * 60 * 5) {
 			console.log('player from database');
 			db.getGlobal(globalData => {
 				console.log('global data from database')
@@ -42,13 +42,15 @@ router.get('/', function (req, res) {
 		else {
 			riot.getPlayer(summonerName, region, (err, profileData) => {
 				console.log('profile from riot');
-				riot.getPlayerData(profileData.accountId, region, (err, updatedData) => {
+				riot.getPlayerData(profileData.accountId, region, (err, runesData, champData) => {
 					console.log('player from riot');
 					db.updatePlayer(stripName, region, {
 						name: profileData.name,
 						icon: profileData.profileIconId,
-						runes: updatedData
+						runes: runesData,
+						champions: champData
 					});
+
 					console.log('player saved to database');
 
 					db.getGlobal(globalData => {
@@ -59,7 +61,7 @@ router.get('/', function (req, res) {
 								icon: profileData.profileIconId,
 								lastUpdated: Date.now()
 							},
-							playerData: updatedData,
+							playerData: runesData,
 							globalData
 						});
 					});

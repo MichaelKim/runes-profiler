@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 router.use('/player', require('./player'));
-router.use('/update', require('./update'));
-router.use('/test', require('./test'));
+router.use('/champ', require('./champ'));
 
 module.exports = router;

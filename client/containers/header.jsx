@@ -13,13 +13,10 @@ const Header = () => (
 		<div className='menu-box'>
 			<div className='menu'>
 				<div className='menu-item'>
-					<a href='http://localhost:5000'>Summoner</a>
+					<a href='http://localhost:5000/summoner'>Summoner</a>
 				</div>
 				<div className='menu-item'>
-					<a href='http://localhost:5000/champion'>Champions</a>
-				</div>
-				<div className='menu-item'>
-					<a href='http://localhost:5000'>Statistics</a>
+					<a href='http://localhost:5000/champion'>Champion</a>
 				</div>
 			</div>
 		</div>

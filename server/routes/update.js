@@ -25,13 +25,15 @@ router.get('/', function (req, res) {
 
 	riot.getPlayer(summonerName, region, (err, profileData) => {
 		console.log('profile from riot');
-		riot.getPlayerData(profileData.accountId, region, (err, updatedData) => {
+		riot.getPlayerData(profileData.accountId, region, (err, updatedData, otherData, champData) => {
 			console.log('player from riot');
 			db.updatePlayer(stripName, region, {
 				name: profileData.name,
 				icon: profileData.profileIconId,
 				runes: updatedData
 			});
+			console.log(champData);
+			db.updateChampion(champData);
 			console.log('player saved to database');
 
 			db.getGlobal(globalData => {

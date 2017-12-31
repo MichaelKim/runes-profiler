@@ -163,6 +163,7 @@ html, body {
 #summoner-name-input {
 	display: block;
 	width: 100%;
+	height: 30px;
 	padding: 0 150px 0 15px;
 	font-size: 20px;
 	background: none;
@@ -208,7 +209,7 @@ html, body {
 
 #invalid-name-box {
 	position: relative;
-	top: -3px;
+	top: 5px;
 	left: 50px;
 	color: red;
 	font-size: 14px;

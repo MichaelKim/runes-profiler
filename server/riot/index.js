@@ -68,6 +68,7 @@ function getPlayerData(accountId, region, callback) {
 
 		let count = 0;
 		let playerData = {};
+		let champData = {};
 
 		matches.forEach((m, i) => {
 			setTimeout(() => {
@@ -79,6 +80,8 @@ function getPlayerData(accountId, region, callback) {
 					if (!err) {
 						const playerId = match.participantIdentities.find((p) => p.player.accountId === accountId).participantId;
 						const playerPart = match.participants.find((p) => p.participantId === playerId);
+
+						let page = '';
 
 						for (let i = 0; i < 6; i++) {
 							if (!playerData[playerPart.stats['perk' + i]]) {
@@ -94,11 +97,40 @@ function getPlayerData(accountId, region, callback) {
 							for (let j = 0; j < 3; j++) {
 								playerData[playerPart.stats['perk' + i]].stats[j] += playerPart.stats['perk' + i + 'Var' + (j+1)];	
 							}
+
+							if (page) page += '@';
+							page += playerPart.stats['perk' + i];
 						}
+
+						if (!champData[playerPart.championId]) {
+							champData[playerPart.championId] = {
+								keystones: {},
+								pages: {}
+							};
+						}
+
+						if (!champData[playerPart.championId].keystones[playerPart.stats['perk0']]) {
+							champData[playerPart.championId].keystones[playerPart.stats['perk0']] = {
+								wins: 0,
+								games: 0
+							};
+						}
+						if (playerPart.stats.win) champData[playerPart.championId].keystones[playerPart.stats['perk0']].wins++;
+						champData[playerPart.championId].keystones[playerPart.stats['perk0']].games++;
+
+
+						if (!champData[playerPart.championId].pages[page]) {
+							champData[playerPart.championId].pages[page] = {
+								wins: 0,
+								games: 0
+							};
+						}
+						if (playerPart.stats.win) champData[playerPart.championId].pages[page].wins++;
+						champData[playerPart.championId].pages[page].games++;
 					}
 
 					if (count >= matches.length) {
-						callback(null, playerData);
+						callback(null, playerData, champData);
 					}
 				});
 			}, 50 * i);
@@ -133,3 +165,60 @@ module.exports = {
 	getPlayerData,
 	getRegionEndpoint
 };
+/*
+
+						match.participants.forEach(playerPart => {
+							let playerData = {};
+
+							let page = '';
+
+							for (let i = 0; i < 6; i++) {
+								if (!playerData[playerPart.stats['perk' + i]]) {
+									playerData[playerPart.stats['perk' + i]] = {
+										wins: 0,
+										games: 0,
+										stats: [0, 0, 0]
+									};
+								}
+
+								if (playerPart.stats.win) playerData[playerPart.stats['perk' + i]].wins++;
+								playerData[playerPart.stats['perk' + i]].games++;
+								for (let j = 0; j < 3; j++) {
+									playerData[playerPart.stats['perk' + i]].stats[j] += playerPart.stats['perk' + i + 'Var' + (j+1)];	
+								}
+
+								if (page) page += '@';
+								page += playerPart.stats['perk' + i];
+							}
+
+							if (!champData[playerPart.championId]) {
+								champData[playerPart.championId] = {
+									keystones: {},
+									pages: {}
+								};
+							}
+
+							if (!champData[playerPart.championId].keystones[playerPart.stats['perk0']]) {
+								champData[playerPart.championId].keystones[playerPart.stats['perk0']] = {
+									wins: 0,
+									games: 0
+								};
+							}
+							if (playerPart.stats.win) champData[playerPart.championId].keystones[playerPart.stats['perk0']].wins++;
+							champData[playerPart.championId].keystones[playerPart.stats['perk0']].games++;
+
+
+							if (!champData[playerPart.championId].pages[page]) {
+								champData[playerPart.championId].pages[page] = {
+									wins: 0,
+									games: 0
+								};
+							}
+							if (playerPart.stats.win) champData[playerPart.championId].pages[page].wins++;
+							champData[playerPart.championId].pages[page].games++;
+
+							playersData.push(playerData);
+
+							if (playerPart.participantId === playerId) singleData = playerData;
+						});
+						*/

@@ -32,10 +32,10 @@ class Update extends React.Component {
 		
 		return (
 			<div className='update-box'>
-				<button
+				{/*<button
 					className='update-button'
 					onClick={() => this.checkUpdate()}
-				>Update</button>
+				>Update</button>*/}
 				<p className='last-updated'>Last updated:<br/>{dateString}</p>
 				<p className='invalid-update' style={{
 					opacity: this.state.showUpdateError ? '1' : '0'
