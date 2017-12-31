@@ -6,11 +6,6 @@ const comp    = require("compression");
 
 app.use(comp());
 
-// app.get('/*', (req, res, next) => {
-// 	console.log('GET:', req.url);
-// 	next();
-// });
-
 app.use(express.static(__dirname + '/../public'));
 
 app.use('/', require('./routes'));

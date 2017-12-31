@@ -88,7 +88,9 @@ function getPlayerData(accountId, region, callback) {
 								playersData[stripName] = {
 									name: p.player.summonerName,
 									icon: p.player.profileIcon,
-									lastUpdated: Date.now(),
+									lastUpdated: p.player.accountId === accountId ?
+										Date.now() :
+										0,
 									runes: {},
 									champions: {}
 								};
