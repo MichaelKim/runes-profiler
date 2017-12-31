@@ -26,7 +26,7 @@ class Update extends React.Component {
 		let dateString = 'Never';
 		if (this.props.lastUpdated) {
 			let d = new Date(this.props.lastUpdated);
-			dateString = Months[d.getMonth()] + ' ' + d.getDay() + ' ' + d.getFullYear() + ' ' +
+			dateString = Months[d.getMonth()] + ' ' + d.getDate() + ' ' + d.getFullYear() + ' ' +
 				d.getHours() + ':' + d.getMinutes().toString().padStart(2, '0');
 		}
 		

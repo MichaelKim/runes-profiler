@@ -42,14 +42,10 @@ router.get('/', function (req, res) {
 		else {
 			riot.getPlayer(summonerName, region, (err, profileData) => {
 				console.log('profile from riot');
-				riot.getPlayerData(profileData.accountId, region, (err, runesData, champData) => {
+				riot.getPlayerData(profileData.accountId, region, (err, playersData) => {
 					console.log('player from riot');
-					db.updatePlayer(stripName, region, {
-						name: profileData.name,
-						icon: profileData.profileIconId,
-						runes: runesData,
-						champions: champData
-					});
+
+					db.updatePlayers(playersData, region);
 
 					console.log('player saved to database');
 
@@ -57,11 +53,11 @@ router.get('/', function (req, res) {
 						console.log('global from database');
 						res.send({
 							profileData: {
-								name: profileData.name,
-								icon: profileData.profileIconId,
-								lastUpdated: Date.now()
+								name: playersData[stripName].name,
+								icon: playersData[stripName].icon,
+								lastUpdated: playersData[stripName].lastUpdated
 							},
-							playerData: runesData,
+							playerData: playersData[stripName].runes,
 							globalData
 						});
 					});

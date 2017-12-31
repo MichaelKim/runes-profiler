@@ -67,8 +67,7 @@ function getPlayerData(accountId, region, callback) {
 		}
 
 		let count = 0;
-		let playerData = {};
-		let champData = {};
+		let playersData = {};
 
 		matches.forEach((m, i) => {
 			setTimeout(() => {
@@ -78,59 +77,81 @@ function getPlayerData(accountId, region, callback) {
 					console.log(count, matches.length);
 
 					if (!err) {
-						const playerId = match.participantIdentities.find((p) => p.player.accountId === accountId).participantId;
-						const playerPart = match.participants.find((p) => p.participantId === playerId);
 
-						let page = '';
+						match.participantIdentities.forEach(p => {
+							const playerId = p.participantId;
+							const part = match.participants.find(q => q.participantId === playerId);
 
-						for (let i = 0; i < 6; i++) {
-							if (!playerData[playerPart.stats['perk' + i]]) {
-								playerData[playerPart.stats['perk' + i]] = {
-									wins: 0,
-									games: 0,
-									stats: [0, 0, 0]
+							const stripName = p.player.summonerName.replace(/\s+/g, '').toLowerCase();
+
+							if (!playersData[stripName]) {
+								playersData[stripName] = {
+									name: p.player.summonerName,
+									icon: p.player.profileIcon,
+									lastUpdated: Date.now(),
+									runes: {},
+									champions: {}
 								};
 							}
 
-							if (playerPart.stats.win) playerData[playerPart.stats['perk' + i]].wins++;
-							playerData[playerPart.stats['perk' + i]].games++;
-							for (let j = 0; j < 3; j++) {
-								playerData[playerPart.stats['perk' + i]].stats[j] += playerPart.stats['perk' + i + 'Var' + (j+1)];	
+							// Runes
+							let page = '';
+							for (let i = 0; i < 6; i++) {
+								const runeId = part.stats['perk' + i];
+								let runeData = playersData[stripName].runes;
+
+								if (!runeData[runeId]) {
+									runeData[runeId] = {
+										wins: 0,
+										games: 0,
+										stats: [0, 0, 0]
+									};
+								}
+
+								if (part.stats.win) runeData[runeId].wins++;
+								runeData[runeId].games++;
+								for (let j = 0; j < 3; j++) {
+									runeData[runeId].stats[j] += part.stats['perk' + i + 'Var' + (j+1)];	
+								}
+
+								if (page) page += '@';
+								page += runeId;
 							}
 
-							if (page) page += '@';
-							page += playerPart.stats['perk' + i];
-						}
+							// Champions
+							let champData = playersData[stripName].champions;
+							const keystoneId = part.stats['perk0'];
 
-						if (!champData[playerPart.championId]) {
-							champData[playerPart.championId] = {
-								keystones: {},
-								pages: {}
-							};
-						}
+							if (!champData[part.championId]) {
+								champData[part.championId] = {
+									keystones: {},
+									pages: {}
+								};
+							}
 
-						if (!champData[playerPart.championId].keystones[playerPart.stats['perk0']]) {
-							champData[playerPart.championId].keystones[playerPart.stats['perk0']] = {
-								wins: 0,
-								games: 0
-							};
-						}
-						if (playerPart.stats.win) champData[playerPart.championId].keystones[playerPart.stats['perk0']].wins++;
-						champData[playerPart.championId].keystones[playerPart.stats['perk0']].games++;
+							if (!champData[part.championId].keystones[keystoneId]) {
+								champData[part.championId].keystones[keystoneId] = {
+									wins: 0,
+									games: 0
+								};
+							}
+							if (part.stats.win) champData[part.championId].keystones[keystoneId].wins++;
+							champData[part.championId].keystones[keystoneId].games++;
 
+							if (!champData[part.championId].pages[page]) {
+								champData[part.championId].pages[page] = {
+									wins: 0,
+									games: 0
+								};
+							}
+							if (part.stats.win) champData[part.championId].pages[page].wins++;
+							champData[part.championId].pages[page].games++;
+						});
 
-						if (!champData[playerPart.championId].pages[page]) {
-							champData[playerPart.championId].pages[page] = {
-								wins: 0,
-								games: 0
-							};
-						}
-						if (playerPart.stats.win) champData[playerPart.championId].pages[page].wins++;
-						champData[playerPart.championId].pages[page].games++;
 					}
 
 					if (count >= matches.length) {
-						callback(null, playerData, champData);
+						callback(null, playersData);
 					}
 				});
 			}, 50 * i);
@@ -165,60 +186,3 @@ module.exports = {
 	getPlayerData,
 	getRegionEndpoint
 };
-/*
-
-						match.participants.forEach(playerPart => {
-							let playerData = {};
-
-							let page = '';
-
-							for (let i = 0; i < 6; i++) {
-								if (!playerData[playerPart.stats['perk' + i]]) {
-									playerData[playerPart.stats['perk' + i]] = {
-										wins: 0,
-										games: 0,
-										stats: [0, 0, 0]
-									};
-								}
-
-								if (playerPart.stats.win) playerData[playerPart.stats['perk' + i]].wins++;
-								playerData[playerPart.stats['perk' + i]].games++;
-								for (let j = 0; j < 3; j++) {
-									playerData[playerPart.stats['perk' + i]].stats[j] += playerPart.stats['perk' + i + 'Var' + (j+1)];	
-								}
-
-								if (page) page += '@';
-								page += playerPart.stats['perk' + i];
-							}
-
-							if (!champData[playerPart.championId]) {
-								champData[playerPart.championId] = {
-									keystones: {},
-									pages: {}
-								};
-							}
-
-							if (!champData[playerPart.championId].keystones[playerPart.stats['perk0']]) {
-								champData[playerPart.championId].keystones[playerPart.stats['perk0']] = {
-									wins: 0,
-									games: 0
-								};
-							}
-							if (playerPart.stats.win) champData[playerPart.championId].keystones[playerPart.stats['perk0']].wins++;
-							champData[playerPart.championId].keystones[playerPart.stats['perk0']].games++;
-
-
-							if (!champData[playerPart.championId].pages[page]) {
-								champData[playerPart.championId].pages[page] = {
-									wins: 0,
-									games: 0
-								};
-							}
-							if (playerPart.stats.win) champData[playerPart.championId].pages[page].wins++;
-							champData[playerPart.championId].pages[page].games++;
-
-							playersData.push(playerData);
-
-							if (playerPart.participantId === playerId) singleData = playerData;
-						});
-						*/

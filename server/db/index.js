@@ -2,6 +2,7 @@ const firebase = require("firebase-admin");
 const serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
 
 const champions = require('../champions.json');
+const champNames = require('./champNames.json');
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
@@ -27,23 +28,142 @@ function getPlayer(stripName, region, callback) {
 	});
 }
 
-function updatePlayer(stripName, region, updatedData) {
+function updatePlayers(playersData, region) {
+	let count = 0;
+	let numPlayers = Object.keys(playersData).length;
+	let updatedRunes = {};
+	let oldRunes = {};
+	let updatedChamp = {};
+	let oldChamp = {};
+
+	Object.entries(playersData).forEach(([playerName, playerData]) => {
+		updatePlayer(playerName, region, playerData, oldData => {
+			console.log(count, numPlayers);
+
+			Object.entries(playerData.runes).forEach(([runeId, runeData]) => {
+				if (!updatedRunes[runeId]) {
+					updatedRunes[runeId] = {
+						wins: 0,
+						games: 0,
+						stats: [0, 0, 0]
+					};
+				}
+
+				updatedRunes[runeId].wins += runeData.wins;
+				updatedRunes[runeId].games += runeData.games;
+				for (let i = 0; i < 3; i++) {
+					updatedRunes[runeId].stats[i] += runeData.stats[i];
+				}
+			});
+
+			Object.entries(oldData.runes).forEach(([runeId, runeData]) => {
+				if (!oldRunes[runeId]) {
+					oldRunes[runeId] = {
+						wins: 0,
+						games: 0,
+						stats: [0, 0, 0]
+					};
+				}
+
+				oldRunes[runeId].wins += runeData.wins;
+				oldRunes[runeId].games += runeData.games;
+				for (let i = 0; i < 3; i++) {
+					oldRunes[runeId].stats[i] += runeData.stats[i];
+				}
+			});
+
+			Object.entries(playerData.champions).forEach(([runeId, runeData]) => {
+				if (!updatedChamp[runeId]) {
+					updatedChamp[runeId] = {
+						keystones: {},
+						pages: {}
+					};
+				}
+
+				Object.entries(runeData.keystones).forEach(([keystoneId, keystoneData]) => {
+					if (!updatedChamp[runeId].keystones[keystoneId]) {
+						updatedChamp[runeId].keystones[keystoneId] = {
+							wins: 0,
+							games: 0
+						};
+					}
+
+					updatedChamp[runeId].keystones[keystoneId].wins += keystoneData.wins;
+					updatedChamp[runeId].keystones[keystoneId].games += keystoneData.games;
+				});
+
+				Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
+					if (!updatedChamp[runeId].pages[pageId]) {
+						updatedChamp[runeId].pages[pageId] = {
+							wins: 0,
+							games: 0
+						};
+					}
+
+					updatedChamp[runeId].pages[pageId].wins += pageData.wins;
+					updatedChamp[runeId].pages[pageId].games += pageData.games;
+				});
+			});
+
+			Object.entries(oldData.champions).forEach(([runeId, runeData]) => {
+				if (!oldData[runeId]) {
+					oldData[runeId] = {
+						keystones: {},
+						pages: {}
+					};
+				}
+
+				Object.entries(runeData.keystones).forEach(([keystoneId, keystoneData]) => {
+					if (!oldData[runeId].keystones[keystoneId]) {
+						oldData[runeId].keystones[keystoneId] = {
+							wins: 0,
+							games: 0
+						};
+					}
+
+					oldData[runeId].keystones[keystoneId].wins += keystoneData.wins;
+					oldData[runeId].keystones[keystoneId].games += keystoneData.games;
+				});
+
+				Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
+					if (!oldData[runeId].pages[pageId]) {
+						oldData[runeId].pages[pageId] = {
+							wins: 0,
+							games: 0
+						};
+					}
+
+					oldData[runeId].pages[pageId].wins += pageData.wins;
+					oldData[runeId].pages[pageId].games += pageData.games;
+				});
+			});
+
+			count++;
+			if (count >= numPlayers) {
+				updateGlobal(updatedRunes, oldRunes);
+				updateChampion(updatedChamp, oldChamp);
+			}
+		});
+	});
+}
+
+function updatePlayer(stripName, region, updatedData, callback) {
 	const ref = firebase.database().ref('players/' + stripName + '@' + region);
 
 	ref.once('value', snap => {
 		const data = snap.val();
-		if (data === undefined || data === null) { // Not stored
-			updateGlobal(updatedData.runes, {});
-			updateChampion(updatedData.champions, {});
-		}
-		else {
-			updateGlobal(updatedData.runes, data.runes);
-			updateChampion(updatedData.champions, data.champions);
-		}
 		ref.set({
 			...updatedData,
 			lastUpdated: Date.now()
 		});
+
+
+		if (data === undefined || data === null) { // Not stored
+			callback({ runes: {}, champions: {}});
+		}
+		else {
+			callback(data);
+		}
 	});
 }
 
@@ -55,6 +175,7 @@ function getGlobal(callback) {
 }
 
 function updateGlobal(updatedData, oldData) {
+	console.log('update global', updatedData);
 	const globalRef = firebase.database().ref('runes');
 	
 	globalRef.once('value', snap => {
@@ -84,7 +205,8 @@ function updateGlobal(updatedData, oldData) {
 			}
 			return acc;
 		}, globalData || {});
-
+		console.log(globalData);
+		console.log(updatedGlobalData)
 		globalRef.set(updatedGlobalData);
 	});
 }
@@ -92,7 +214,14 @@ function updateGlobal(updatedData, oldData) {
 function getChampion(championName, callback) {
 	firebase.database().ref('champions/' + championName).once('value', snap => {
 		const data = snap.val();
-		callback(data);
+		if (data === undefined || data == null) {
+			callback({
+				name: champNames[championName]
+			});
+		}
+		else {
+			callback(data);
+		}
 	});
 }
 
@@ -172,7 +301,7 @@ function updateChampion(updatedData, oldData) {
 
 module.exports = {
 	getPlayer,
-	updatePlayer,
+	updatePlayers,
 	getGlobal,
 	getChampion,
 	updateChampion
