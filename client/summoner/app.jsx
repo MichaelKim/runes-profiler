@@ -28,20 +28,6 @@ class App extends React.Component {
 		});
 	}
 
-	updateProfile() {
-		this.setState({
-			loaded: false,
-			selectedPath: -1
-		});
-		makeRequest('/update?name=' + this.props.name + '&region=' + this.props.region, (data) => {
-			this.setState({
-				loaded: true,
-				data: data,
-				selectedPath: 0
-			});
-		});
-	}
-
 	render() {
 		return (
 	    	<React.Fragment>
@@ -58,7 +44,6 @@ class App extends React.Component {
 										name={this.state.data.profileData.name}
 									/>
 									<Update
-										onUpdate={() => this.updateProfile()}
 										lastUpdated={this.state.data.profileData.lastUpdated}
 									/>
 								</div>
@@ -85,21 +70,15 @@ App.propTypes = {
 module.exports = App;
 
 function makeRequest(url, callback) {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState == 4) {
-			if (xhr.status == 200) {
-				console.log(xhr.responseText);
-				callback(JSON.parse(xhr.responseText));
-			}
-			else {
-				console.log('HTTP Error ' + xml.status);
-				console.log(xml.responseText);
-				console.log(xml.statusText);
-			}
+	fetch(url).then(res => {
+		if (res.status !== 200) {
+			console.log('HTTP Error ' + res.status);
 		}
-	}
-	xhr.open('GET', 'http://localhost:5000' + url, true);
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhr.send();
+		res.json().then(data => {
+			console.log(data);
+			callback(data);
+		});
+	}).catch(err => {
+		console.error('Fetch error', err);
+	});
 }
