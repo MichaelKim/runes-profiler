@@ -21,8 +21,7 @@ html, body {
 
 .header {
 	margin: 0 auto;
-	padding-top: 12px;
-	padding-bottom: 12px;
+	padding: 12px;
     max-width: 1300px;
 }
 
