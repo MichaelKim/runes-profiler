@@ -231,9 +231,10 @@ html, body {
 	height: 275px;
 	margin-left: 4%;
 	margin-bottom: 1%;
+	padding: 0 5px;
 	text-align: center;
 	box-sizing: border-box;
-	border: 1px solid #241d19;
+	border: 1px solid #785a28;
 }
 
 .rune-name {
@@ -262,7 +263,7 @@ td:nth-of-type(2), th:nth-of-type(2) {
 }
 
 tr {
-	height: 27px;
+	height: 25px;
 }
 
 .footer {
