@@ -10,6 +10,10 @@ import championNames from './champNames.json';
 
 const name = QueryString.parse(window.location.search.slice(1)).name;
 
+if (name && !championNames[name.replace(/\s+/g, '').toLowerCase()]) {
+	window.location.href = '/champion';
+}
+
 render(
 	name ?
 		<App
@@ -22,11 +26,12 @@ render(
 	    			<h1>Champion Search</h1>
 	    			<p>Select a champion below to view winning runes!</p>
 	    			{
-	    				championNames.map(c => (
+	    				Object.values(championNames).map(c => (
 	    					<img
 	    						style={{ width: '75px', height: '75px', cursor: 'pointer' }}
 	    						src={'../assets/champion/' + c + '.png'}
-	    						onClick={() => window.location.href = 'http://localhost:5000/champion?name=' + c}
+	    						onClick={() => window.location.href = '/champion?name=' + c}
+	    						key={c}
 	    					/>
 	    				))
 	    			}

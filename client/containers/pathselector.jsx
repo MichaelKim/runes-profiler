@@ -5,7 +5,11 @@ const PathSelector = ({ pathNames, onSelect }) => (
 	<div>
 		{
 			pathNames.map((path, i) => (
-				<div id={path.toLowerCase() + '-button'} key={i} onClick={e => onSelect(i)}>
+				<div
+					id={path.toLowerCase() + '-button'}
+					onClick={e => onSelect(i)}
+					key={i}
+				>
 					{path}
 				</div>
 			))

@@ -10,8 +10,7 @@ firebase.initializeApp({
 });
 
 function getPlayer(stripName, region, callback) {
-	const ref = firebase.database().ref('players/' + stripName + '@' + region);
-	ref.once('value', snap => {
+	firebase.database().ref('players/' + stripName + '@' + region).once('value', snap => {
 		const data = snap.val();
 		if (data === undefined || data === null ||
 			!data.name || !data.icon || !data.lastUpdated || !data.runes) { // Not stored
@@ -296,13 +295,11 @@ function updateChampion(updatedData, oldData) {
 			ref.set(data);
 		});
 	});
-	
 }
 
 module.exports = {
 	getPlayer,
 	updatePlayers,
 	getGlobal,
-	getChampion,
-	updateChampion
+	getChampion
 };
