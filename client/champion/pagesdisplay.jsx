@@ -1,48 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class PagesDisplay extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+const PagesDisplay = ({ data }) => {
+	let pages = [];
 
-	render() {
-		if (this.props.data) {
-			let sorted = Object.entries(this.props.data).sort((a, b) => (a.wins / a.games) > (b.wins / b.games));
+	if (data) {
+		const sorted = Object.entries(data).sort((a, b) => (a[1].wins / a[1].games) > (b[1].wins / b[1].games));
 
-			let pages = [];
+		for (let i = 0; i < Math.min(sorted.length, 2); i++) {
+			const [pageId, pageData] = sorted[i];
 
-			for (let i = 0; i < 2 && i < sorted.length; i++) {
-				let winrate = (sorted[i][1].wins / sorted[i][1].games * 100).toFixed(2);
-				let runes = sorted[i][0].split('@').map(rune => (
-					<img style={{ width: '50px', height: '50px' }} src={'../assets/runes/' + rune + '.png'} />
-				));
-				pages.push(
-					<div>
-						{runes}
-						<p>Winrate: {winrate}%</p>
-					</div>
-				);
-			}
+			const winrate = (pageData.wins / pageData.games * 100).toFixed(2);
+			const runes = pageId.split('@').map(rune => (
+				<img
+					style={{ width: '50px', height: '50px' }}
+					src={'../assets/runes/' + rune + '.png'}
+					key={rune}
+				/>
+			));
 
-			return (
-				<div style={{ width: '50%', display: 'inline-block'}}>
-					<h2>Pages</h2>
-					{pages}
+			pages.push(
+				<div key={i}>
+					{runes}
+					<p>Winrate: {winrate}%</p>
 				</div>
 			);
 		}
-		return (
-			<div style={{ width: '50%', display: 'inline-block'}}>
-				<h2>Pages</h2>
-				<p>Not enough data</p>
-			</div>
-		);
 	}
+
+	return (
+		<div style={{ width: '50%', display: 'inline-block'}}>
+			<h2>Pages</h2>
+			{ data ?
+				pages :
+				<p>Not enough data</p>
+			}
+		</div>
+	);
 }
 
 PagesDisplay.propTypes = {
-	data: PropTypes.object.isRequired
+	data: PropTypes.object
 };
 
 module.exports = PagesDisplay;

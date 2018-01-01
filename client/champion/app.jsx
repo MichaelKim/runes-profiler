@@ -31,7 +31,7 @@ class App extends React.Component {
 			    	this.state.loaded ?
 					<React.Fragment>
 						<Header />
-				    	<div id='center'>
+				    	<div id='center' className='fadein'>
 				    		<div style={{ margin: '0 auto 70px auto', width: '800px' }}>
 				    			<div style={{ marginTop: '12px'}}>
 						    		<img style={{ width: '100px', height: '100px' }} src={'../assets/champion/' + this.state.data.name + '.png'} />
