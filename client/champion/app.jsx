@@ -33,11 +33,11 @@ class App extends React.Component {
 						<Header />
 				    	<div id='center' className='fadein'>
 				    		<div style={{ margin: '0 auto 70px auto', width: '800px' }}>
-				    			<div style={{ marginTop: '12px'}}>
+				    			<div style={{ marginTop: '12px', borderBottom: '2px solid #f0e6d2', boxSizing: 'border-box' }}>
 						    		<img style={{ width: '100px', height: '100px' }} src={'../assets/champion/' + this.state.data.name + '.png'} />
-						    		<h1 style={{ display: 'inline', position: 'relative', bottom: '38px' }}>{this.state.data.name}</h1>
+						    		<h1 style={{ display: 'inline', position: 'relative', bottom: '38px', left: '10px' }}>{this.state.data.name}</h1>
 					    		</div>
-					    		<div>
+					    		<div style={{ display: 'flex' }}>
 						    		<KeystonesDisplay data={this.state.data.keystones} />
 						    		<PagesDisplay data={this.state.data.pages} />
 					    		</div>

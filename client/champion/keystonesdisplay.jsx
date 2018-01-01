@@ -14,15 +14,15 @@ const KeystonesDisplay = ({ data }) => {
 			keystones.push(
 				<div key={i}>
 					<img style={{ width: '100px', height: '100px' }} src={'../assets/runes/' + runeId + '.png'} />
-					<p>Winrate: {winrate}%</p>
+					<p style={{ display: 'inline', position: 'relative', bottom: '48px', left: '30px' }}>Winrate: {winrate}%</p>
 				</div>
 			);
 		}
 	}
 
 	return (
-		<div style={{ width: '50%', display: 'inline-block'}}>
-			<h2>Keystones</h2>
+		<div style={{ flex: '1', textAlign: 'center', border: '3px solid #ab8f57', margin: '10px 10px 0 0' }}>
+			<h2 style={{ margin: '10px' }}>Keystones</h2>
 			{ data ?
 				keystones :
 				<p>Not enough data</p>

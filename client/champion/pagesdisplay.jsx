@@ -29,8 +29,8 @@ const PagesDisplay = ({ data }) => {
 	}
 
 	return (
-		<div style={{ width: '50%', display: 'inline-block'}}>
-			<h2>Pages</h2>
+		<div style={{ flex: '1', textAlign: 'center', border: '3px solid #ab8f57', margin: '10px 0 0 10px' }}>
+			<h2 style={{ margin: '10px' }}>Pages</h2>
 			{ data ?
 				pages :
 				<p>Not enough data</p>
