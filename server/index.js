@@ -12,7 +12,7 @@ app.use('/', require('./routes'));
 
 app.use('/*', (req, res) => {
 	// Send 404 page?
-	res.redirect('http://localhost:5000');
+	res.redirect('/');
 });
 
 app.use((err, req, res, next) => {

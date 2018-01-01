@@ -6,7 +6,7 @@ const Header = () => (
 	<React.Fragment>
 		<div className='header-box'>
 			<div className='header'>
-				<a className='logo' href='http://localhost:5000'>Runes Profiler</a>
+				<a className='logo' href='/'>Runes Profiler</a>
 				<Search />
 			</div>
 		</div>

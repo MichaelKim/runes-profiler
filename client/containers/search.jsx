@@ -36,7 +36,7 @@ class Search extends React.Component {
 
 		if (this.validName(summonerName)) {
 			Cookies.set('hist', summonerName, { expires: 365 });
-			window.location.href = 'http://localhost:5000/summoner?name=' + summonerName + '&region=' + region;
+			window.location.href = '/summoner?name=' + summonerName + '&region=' + region;
 		}
 		else {
 			this.setState({ invalid: true });
