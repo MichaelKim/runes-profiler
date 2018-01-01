@@ -8,9 +8,11 @@ The goal of this project is to help players understand their rune usages by comp
 
 ## Overview
 
-Runes Profiler takes the last 20 games of a player, and calculates the winrates and average stats for each rune used by the player in those matches. It then displays these stats alongside the global average stats of those runes.
+Runes Profiler takes the last 20 games of a player, and calculates the winrates and average stats for each rune used by the player in those matches. It then displays these stats alongside the global average stats of those runes. In addition, Runes Profiler also collects champion stats, and shows the highest winrate keystones and rune pages.
 
-In addition, Runes Profiler also collects champion stats, and shows the highest winrate keystones and rune pages.
+To efficiently collect more data, all the other players in those 20 games are also analyzed and added to the global stats. Similarly, champion stats are also taken indirectly when player stats are retrieved.
+
+To prevent sending too many requests, a player's stats won't be updated if they have been last searched within 5 minutes.
 
 ## Development
 
@@ -20,7 +22,7 @@ To build and run,
 
 ### Technologies
 
-Runes Profiler is built with a React / webpack frontend and a Node / Express backend, using a Firebase database. In the early stages of development, I spent a lot of time reorganizing the code and trying out various other tools, such as Postgres and MongoDB for the database, and Marko and Pug for templating. In the end, I decided to use those tools since I've them before in previous projects so I was comfortable using them, but also I had little time to work with so learning how to use new tools would cut into development time. Despite this, 
+Runes Profiler is built with a React / webpack frontend and a Node / Express backend, using a Firebase database. In the early stages of development, I spent a lot of time reorganizing the code and trying out various other tools, such as Postgres and MongoDB for the database, and Marko and Pug for templating. In the end, I decided to use those tools since I've them before in previous projects so I was comfortable using them, but also I had little time to work with so  how to use new tools would cut into development time. Despite this, 
 
 ### Challenges
 
@@ -28,6 +30,7 @@ Runes Profiler is built with a React / webpack frontend and a Node / Express bac
 2. Being rate limited also meant I can't collect more information for a player. Currently, Runes Profiler grabs the last 20 games, but extending that to 100 games would improve its rune analysis.
 3. I learned about the challenge one week after it started through a friend. There were a lot of other features I wanted to add, and the UI could have been more polished than I had hoped.
 4. With more time, I would have switched Firebase with a more robust database tool like Postgres or MongoDB. Also, I would have used some sort of CSS modules along with React to make it more modular, rather than putting all the CSS into one file.
+5. The global and champion stats are collected whenever a player's stats is updated. To make sure multiple copies of data aren't added to the global and champion stats (i.e. when searching a moner twice), all of the previous data of the player is stored and subtracted from the global stats before adding the player's updated data. This increases the size of the database, but ensures that the global and champion stats are correct.
 
 ## Disclaimer
 
