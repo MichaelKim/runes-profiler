@@ -57,6 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+.DS_Store
 data/
 main.js
 main.js.map

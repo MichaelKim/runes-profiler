@@ -43,18 +43,7 @@ html, body {
     text-decoration: none;
     outline: none;
     color: #f0e6d2;
-}
-
-.menu-box {
-	position: relative;
-	width: 100%;
-    background-color: #121212;
-    border-bottom: 2px solid #ab8f57;
-}
-
-.menu {
-	margin: 0 auto;
-    max-width: 1300px;
+		padding: 0 10px;
 }
 
 .menu-item {
@@ -191,10 +180,10 @@ html, body {
 #invalid-name-box {
 	position: relative;
 	top: 5px;
-	left: 50px;
 	color: red;
 	font-size: 14px;
 	transition: opacity 0.5s;
+	text-align: center;
 }
 
 

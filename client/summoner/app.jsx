@@ -8,77 +8,70 @@ import Loader from '../containers/loader.jsx';
 import Profile from '../containers/profile.jsx';
 import Update from '../containers/update.jsx';
 import RunesDisplay from '../containers/runesdisplay.jsx';
+import { makeRequest } from '../utils';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			loaded: false,
-			data: {},
-			selectedPath: -1,
-			showUpdateError: false
-		};
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+      data: {},
+      selectedPath: -1,
+      showUpdateError: false
+    };
+  }
 
-		makeRequest('/player?name=' + this.props.name + '&region=' + this.props.region, (data) => {
-			this.setState({
-				loaded: true,
-				data: data,
-				selectedPath: 0
-			});
-		});
-	}
+  componentDidMount() {
+    makeRequest(
+      '/test?name=' + this.props.name + '&region=' + this.props.region
+    )
+      .then(data => {
+        this.setState({
+          loaded: true,
+          data: data,
+          selectedPath: 0
+        });
+      })
+      .catch(err => {
+        console.error('Fetch error', err);
+      });
+  }
 
-	render() {
-		return (
-	    	<React.Fragment>
-				<Background index={this.state.selectedPath} />
-			    {
-			    	this.state.loaded ?
-			    	<React.Fragment>
-						<Header />
-				    	<div id='center'>
-							<div id='stats' className='fadein'>
-								<div id='stats-top'>
-									<Profile
-										imageId={this.state.data.profileData.icon}
-										name={this.state.data.profileData.name}
-									/>
-									<Update
-										lastUpdated={this.state.data.profileData.lastUpdated}
-									/>
-								</div>
-								<RunesDisplay
-									data={this.state.data}
-			    					onSelect={i => this.setState({ selectedPath: i})}
-								/>
-							</div>
-						</div>
-		    		</React.Fragment> :
-		    		<Loader />
-		    	}
-		    	<Footer />
-		    </React.Fragment>
-		);
-	}
+  render() {
+    const { selectedPath, loaded, data } = this.state;
+
+    return (
+      <div>
+        <Background index={selectedPath} />
+        <Header />
+        {loaded ? (
+          <div id="center">
+            <div id="stats" className="fadein">
+              <div id="stats-top">
+                <Profile
+                  imageId={data.profileData.icon}
+                  name={data.profileData.name}
+                />
+                <Update lastUpdated={data.profileData.lastUpdated} />
+              </div>
+              <RunesDisplay
+                data={data}
+                onSelect={i => this.setState({ selectedPath: i })}
+              />
+            </div>
+		        <Footer />
+          </div>
+        ) : (
+          <Loader />
+        )}
+      </div>
+    );
+  }
 }
 
 App.propTypes = {
-	name: PropTypes.string.isRequired,
-	region: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  region: PropTypes.string.isRequired
 };
 
 module.exports = App;
-
-function makeRequest(url, callback) {
-	fetch(url).then(res => {
-		if (res.status !== 200) {
-			console.log('HTTP Error ' + res.status);
-		}
-		res.json().then(data => {
-			console.log(data);
-			callback(data);
-		});
-	}).catch(err => {
-		console.error('Fetch error', err);
-	});
-}

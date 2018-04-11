@@ -2,87 +2,93 @@ import React from 'react';
 import XRegExp from 'xregexp';
 import Cookies from 'js-cookie';
 
+const regions = [
+  'NA',
+  'EUW',
+  'EUNE',
+  'LAN',
+  'LAS',
+  'KR',
+  'BR',
+  'JP',
+  'OCE',
+  'RU',
+  'TR',
+  'PBE'
+];
+
 class Search extends React.Component {
-	constructor(props) {
-		super(props);
-		this.nameRegex = XRegExp('^[0-9\\p{L} _\\.]+$');
-		this.nameHistory = Cookies.get('hist') || '';
-		this.state = {
-			name: this.nameHistory,
-			region: 'na',
-			invalid: false
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.nameRegex = XRegExp('^[0-9\\p{L} _\\.]+$');
+    this.state = {
+      name: Cookies.get('hist') || 'Summmoner Name',
+      region: 'na',
+      invalid: false
+    };
+  }
 
-	validName(summonerName) {
-		return XRegExp.test(summonerName, this.nameRegex);
-	}
+  validName(summonerName) {
+    return XRegExp.test(summonerName, this.nameRegex);
+  }
 
-	onInput(e) {
-		this.setState({ name: e.target.value });
-	}
+  onInput(e) {
+    this.setState({ name: e.target.value });
+  }
 
-	onSelect(e) {
-		this.setState({ region: e.target.value });
-	}
+  onSelect(e) {
+    this.setState({ region: e.target.value });
+  }
 
-	runOnEnter(e) {
-		if (e.key === 'Enter') this.run();
-	}
+  runOnEnter(e) {
+    if (e.key === 'Enter') this.run();
+  }
 
-	run() {
-		var region = this.state.region;
-		var summonerName = this.state.name;
+  run() {
+    const { region, name } = this.state;
 
-		if (this.validName(summonerName)) {
-			Cookies.set('hist', summonerName, { expires: 365 });
-			window.location.href = '/summoner?name=' + summonerName + '&region=' + region;
-		}
-		else {
-			this.setState({ invalid: true });
-			setTimeout(() => {
-				this.setState({ invalid: false });
-			}, 2000);
-		}
-	}
+    if (this.validName(name)) {
+      Cookies.set('hist', name, { expires: 365 });
+      window.location.href = '/summoner?name=' + name + '&region=' + region;
+    } else {
+      this.setState({ invalid: true });
+      setTimeout(() => {
+        this.setState({ invalid: false });
+      }, 2000);
+    }
+  }
 
-	render() {
-		return (
-			<div id="input-box">
-				<input
-					id="summoner-name-input"
-					placeholder={this.nameHistory || "Summmoner Name"}
-					onChange={e => this.onInput(e)}
-					onKeyPress={e => this.runOnEnter(e)}
-				/>
-				<div
-					id="invalid-name-box"
-					style={{ opacity: this.state.invalid ? '1' : '0' }}
-				>
-					Invalid summoner name!
-				</div>
-				<select
-					id="region-select"
-					value={this.state.region}
-					onChange={e => this.onSelect(e)}
-				>
-					<option value="na">NA</option>
-					<option value="euw">EUW</option>
-					<option value="eune">EUNE</option>
-					<option value="lan">LAN</option>
-					<option value="las">LAS</option>
-					<option value="kr">KR</option>
-					<option value="br">BR</option>
-					<option value="jp">JP</option>
-					<option value="oce">OCE</option>
-					<option value="ru">RU</option>
-					<option value="tr">TR</option>
-					<option value="pbe">PBE</option>
-				</select>
-				<button id="search-btn" onClick={e => this.run(e)}>Go</button>
-			</div>
-		);
-	}
+  render() {
+    const { name, invalid, region } = this.state;
+
+    return (
+      <div id="input-box">
+        <input
+          id="summoner-name-input"
+          placeholder={name}
+          onChange={e => this.onInput(e)}
+          onKeyPress={e => this.runOnEnter(e)}
+        />
+        <div id="invalid-name-box" style={{ opacity: invalid ? '1' : '0' }}>
+          Invalid summoner name!
+        </div>
+        <select
+          id="region-select"
+          value={region}
+          onChange={e => this.onSelect(e)}
+        >
+          {regions.map(r => (
+            <option key={r} value={r.toLowerCase()}>
+              {r}
+            </option>
+          ))}
+        </select>
+        <button id="search-btn" onClick={e => this.run(e)}>
+          Go
+        </button>
+      </div>
+    );
+  }
 }
 
 module.exports = Search;
