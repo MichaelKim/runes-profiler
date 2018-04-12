@@ -9,174 +9,184 @@ firebase.initializeApp({
   databaseURL: process.env.FIREBASE_URL
 });
 
-function getPlayer(stripName, region, callback) {
-	firebase.database().ref('players/' + stripName + '@' + region).once('value', snap => {
-		const data = snap.val();
-		if (data === undefined || data === null ||
-			!data.name || !data.icon || !data.lastUpdated || !data.runes) { // Not stored
-			callback(null);
-		}
-		else {
-			callback({
-				name: data.name,
-				icon: data.icon,
-				lastUpdated: data.lastUpdated,
-				runes: data.runes
-			});
-		}
-	});
+function getPlayer(stripName, region) {
+  return firebase.database().ref('players/' + stripName + '@' + region).once('value').then(snap => {
+    const data = snap.val();
+    if (!snap.exists() ||
+      !data.name || !data.icon || !data.lastUpdated || !data.runes) { // Not stored
+      console.log('Player missing');
+      return null;
+    }
+    else if (Date.now() - data.lastUpdated >= 1000 * 60 * 5) { // Outdated data
+      console.log('Player outdated');
+      return null;
+    }
+    else {
+      console.log('Player from database');
+      return {
+        name: data.name,
+        icon: data.icon,
+        lastUpdated: data.lastUpdated,
+        runes: data.runes
+      };
+    }
+  });
 }
 
 function updatePlayers(playersData, region) {
-	let count = 0;
-	let numPlayers = Object.keys(playersData).length;
-	let updatedRunes = {};
-	let oldRunes = {};
-	let updatedChamp = {};
-	let oldChamp = {};
+  let updatedRunes = {};
+  let oldRunes = {};
+  let updatedChamp = {};
+  let oldChamp = {};
 
-	Object.entries(playersData).forEach(([playerName, playerData]) => {
-		updatePlayer(playerName, region, playerData, oldData => {
-			console.log(count, numPlayers);
+  const promises = Object.entries(playersData).map(
+    ([playerName, playerData]) => {
+      return updatePlayer(playerName, region, playerData).then(oldData => {
+        Object.entries(playerData.runes).forEach(([runeId, runeData]) => {
+          if (!updatedRunes[runeId]) {
+            updatedRunes[runeId] = {
+              wins: 0,
+              games: 0,
+              stats: [0, 0, 0]
+            };
+          }
 
-			Object.entries(playerData.runes).forEach(([runeId, runeData]) => {
-				if (!updatedRunes[runeId]) {
-					updatedRunes[runeId] = {
-						wins: 0,
-						games: 0,
-						stats: [0, 0, 0]
-					};
-				}
+          updatedRunes[runeId].wins += runeData.wins;
+          updatedRunes[runeId].games += runeData.games;
+          for (let i = 0; i < 3; i++) {
+            updatedRunes[runeId].stats[i] += runeData.stats[i];
+          }
+        });
 
-				updatedRunes[runeId].wins += runeData.wins;
-				updatedRunes[runeId].games += runeData.games;
-				for (let i = 0; i < 3; i++) {
-					updatedRunes[runeId].stats[i] += runeData.stats[i];
-				}
-			});
+        Object.entries(oldData.runes).forEach(([runeId, runeData]) => {
+          if (!oldRunes[runeId]) {
+            oldRunes[runeId] = {
+              wins: 0,
+              games: 0,
+              stats: [0, 0, 0]
+            };
+          }
 
-			Object.entries(oldData.runes).forEach(([runeId, runeData]) => {
-				if (!oldRunes[runeId]) {
-					oldRunes[runeId] = {
-						wins: 0,
-						games: 0,
-						stats: [0, 0, 0]
-					};
-				}
+          oldRunes[runeId].wins += runeData.wins;
+          oldRunes[runeId].games += runeData.games;
+          for (let i = 0; i < 3; i++) {
+            oldRunes[runeId].stats[i] += runeData.stats[i];
+          }
+        });
 
-				oldRunes[runeId].wins += runeData.wins;
-				oldRunes[runeId].games += runeData.games;
-				for (let i = 0; i < 3; i++) {
-					oldRunes[runeId].stats[i] += runeData.stats[i];
-				}
-			});
+        Object.entries(playerData.champions).forEach(([runeId, runeData]) => {
+          if (!updatedChamp[runeId]) {
+            updatedChamp[runeId] = {
+              keystones: {},
+              pages: {}
+            };
+          }
 
-			Object.entries(playerData.champions).forEach(([runeId, runeData]) => {
-				if (!updatedChamp[runeId]) {
-					updatedChamp[runeId] = {
-						keystones: {},
-						pages: {}
-					};
-				}
+          Object.entries(runeData.keystones).forEach(
+            ([keystoneId, keystoneData]) => {
+              if (!updatedChamp[runeId].keystones[keystoneId]) {
+                updatedChamp[runeId].keystones[keystoneId] = {
+                  wins: 0,
+                  games: 0
+                };
+              }
 
-				Object.entries(runeData.keystones).forEach(([keystoneId, keystoneData]) => {
-					if (!updatedChamp[runeId].keystones[keystoneId]) {
-						updatedChamp[runeId].keystones[keystoneId] = {
-							wins: 0,
-							games: 0
-						};
-					}
+              updatedChamp[runeId].keystones[keystoneId].wins +=
+                keystoneData.wins;
+              updatedChamp[runeId].keystones[keystoneId].games +=
+                keystoneData.games;
+            }
+          );
 
-					updatedChamp[runeId].keystones[keystoneId].wins += keystoneData.wins;
-					updatedChamp[runeId].keystones[keystoneId].games += keystoneData.games;
-				});
+          Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
+            if (!updatedChamp[runeId].pages[pageId]) {
+              updatedChamp[runeId].pages[pageId] = {
+                wins: 0,
+                games: 0
+              };
+            }
 
-				Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
-					if (!updatedChamp[runeId].pages[pageId]) {
-						updatedChamp[runeId].pages[pageId] = {
-							wins: 0,
-							games: 0
-						};
-					}
+            updatedChamp[runeId].pages[pageId].wins += pageData.wins;
+            updatedChamp[runeId].pages[pageId].games += pageData.games;
+          });
+        });
 
-					updatedChamp[runeId].pages[pageId].wins += pageData.wins;
-					updatedChamp[runeId].pages[pageId].games += pageData.games;
-				});
-			});
+        Object.entries(oldData.champions).forEach(([runeId, runeData]) => {
+          if (!oldData[runeId]) {
+            oldData[runeId] = {
+              keystones: {},
+              pages: {}
+            };
+          }
 
-			Object.entries(oldData.champions).forEach(([runeId, runeData]) => {
-				if (!oldData[runeId]) {
-					oldData[runeId] = {
-						keystones: {},
-						pages: {}
-					};
-				}
+          Object.entries(runeData.keystones).forEach(
+            ([keystoneId, keystoneData]) => {
+              if (!oldData[runeId].keystones[keystoneId]) {
+                oldData[runeId].keystones[keystoneId] = {
+                  wins: 0,
+                  games: 0
+                };
+              }
 
-				Object.entries(runeData.keystones).forEach(([keystoneId, keystoneData]) => {
-					if (!oldData[runeId].keystones[keystoneId]) {
-						oldData[runeId].keystones[keystoneId] = {
-							wins: 0,
-							games: 0
-						};
-					}
+              oldData[runeId].keystones[keystoneId].wins += keystoneData.wins;
+              oldData[runeId].keystones[keystoneId].games += keystoneData.games;
+            }
+          );
 
-					oldData[runeId].keystones[keystoneId].wins += keystoneData.wins;
-					oldData[runeId].keystones[keystoneId].games += keystoneData.games;
-				});
+          Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
+            if (!oldData[runeId].pages[pageId]) {
+              oldData[runeId].pages[pageId] = {
+                wins: 0,
+                games: 0
+              };
+            }
 
-				Object.entries(runeData.pages).forEach(([pageId, pageData]) => {
-					if (!oldData[runeId].pages[pageId]) {
-						oldData[runeId].pages[pageId] = {
-							wins: 0,
-							games: 0
-						};
-					}
+            oldData[runeId].pages[pageId].wins += pageData.wins;
+            oldData[runeId].pages[pageId].games += pageData.games;
+          });
+        });
 
-					oldData[runeId].pages[pageId].wins += pageData.wins;
-					oldData[runeId].pages[pageId].games += pageData.games;
-				});
-			});
+        return Promise.resolve();
+      });
+    }
+  );
 
-			count++;
-			if (count >= numPlayers) {
-				updateGlobal(updatedRunes, oldRunes);
-				updateChampion(updatedChamp, oldChamp);
-			}
-		});
-	});
+  Promise.all(promises).then(() => {
+    updateGlobal(updatedRunes, oldRunes);
+    updateChampion(updatedChamp, oldChamp);
+  });
 }
 
-function updatePlayer(stripName, region, updatedData, callback) {
-	const ref = firebase.database().ref('players/' + stripName + '@' + region);
+function updatePlayer(stripName, region, updatedData) {
+  const ref = firebase.database().ref('players/' + stripName + '@' + region);
 
-	ref.once('value', snap => {
-		const data = snap.val();
-		ref.set({
-			...updatedData,
-			lastUpdated: Date.now()
-		});
+  return ref.once('value').then(snap => {
+    const data = snap.val();
+    ref.set({
+      ...updatedData,
+      lastUpdated: Date.now()
+    });
 
-
-		if (data === undefined || data === null) { // Not stored
-			callback({ runes: {}, champions: {}});
-		}
-		else {
-			callback(data);
-		}
-	});
+    if (snap.exists()) {
+      return data;
+    }
+    // Not stored
+    return { runes: {}, champions: {} };
+  });
 }
 
-function getGlobal(callback) {
-	firebase.database().ref('runes').once('value', snap => {
-		const data = snap.val();
-		callback(data);
+function getGlobal() {
+	return firebase.database().ref('runes').once('value').then(snap => {
+    // if (snap.exists()) return snap.val();
+    // throw 'Global missing';
+    return snap.val();
 	});
 }
 
 function updateGlobal(updatedData, oldData) {
 	console.log('update global', updatedData);
 	const globalRef = firebase.database().ref('runes');
-	
+
 	globalRef.once('value', snap => {
 		const globalData = snap.val();
 		const updatedGlobalData = Object.entries(updatedData).reduce((acc, [runeId, rune]) => {
@@ -227,11 +237,14 @@ function getChampion(championName, callback) {
 function updateChampion(updatedData, oldData) {
 	Object.entries(updatedData).forEach(([championId, championData]) => {
 
+    console.log(championId, champions[championId]);
+    if (!champions[championId]) return;
+
 		const stripName = champions[championId].replace(/\s+/g, '').toLowerCase();
 		const ref = firebase.database().ref('champions/' + stripName);
 		ref.once('value', snap => {
 			let data = snap.val();
-			
+
 			if (data === undefined || data === null) {
 				data = {
 					name: champions[championId],

@@ -23,7 +23,7 @@ class App extends React.Component {
 
   componentDidMount() {
     makeRequest(
-      '/test?name=' + this.props.name + '&region=' + this.props.region
+      '/player?name=' + this.props.name + '&region=' + this.props.region
     )
       .then(data => {
         this.setState({
