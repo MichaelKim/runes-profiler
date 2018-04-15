@@ -23,44 +23,43 @@ router.get('/', function(req, res) {
 
   const stripName = riot.getStripName(summonerName);
 
-  const getGlobal = db.getGlobal();
-  const getPlayer = db
-    .getPlayer(stripName, region)
-    .then(player => {
-      if (player) {
-        return player;
-      }
-      return riot
-        .getPlayer(summonerName, region)
-        .then(profileData => riot.getPlayerData(profileData.accountId, region))
-        .then(playersData => {
-          console.log('player from riot');
+  const globalPromise = db.getGlobal();
+  const playerPromise = db.getPlayer(stripName, region).then(player => {
+    if (player) {
+      return player;
+    }
+    return riot
+      .getSummoner(summonerName, region)
+      .then(profileData => riot.getPlayersData(profileData.accountId, region))
+      .then(playersData => {
+        console.log('player from riot');
 
-          db.updatePlayers(playersData, region);
+        db.updatePlayers(playersData, region);
 
-          console.log('player saved to database');
+        console.log('player saved to database');
 
-          return playersData[stripName];
-        });
+        return playersData[stripName];
+      });
+  });
+
+  Promise.all([playerPromise, globalPromise])
+    .then(([playerData, globalData]) => {
+      console.log('global data from database');
+      res.send({
+        profileData: {
+          name: playerData.name,
+          icon: playerData.icon,
+          lastUpdated: playerData.lastUpdated
+        },
+        playerData: playerData.runes,
+        globalData
+      });
     })
     .catch(error => {
       console.log(error);
       res.status(500);
       res.send(error);
     });
-
-  Promise.all([getPlayer, getGlobal]).then(([playerData, globalData]) => {
-    console.log('global data from database');
-    res.send({
-      profileData: {
-        name: playerData.name,
-        icon: playerData.icon,
-        lastUpdated: playerData.lastUpdated
-      },
-      playerData: playerData.runes,
-      globalData
-    });
-  });
 });
 
 module.exports = router;

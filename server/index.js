@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+if (!process.env.RIOT_API) throw 'Missing Riot API key!';
+if (!process.env.FIREBASE_KEY) throw 'Missing Firebase API key!';
+
 const express = require("express");
 const app     = express();
 const comp    = require("compression");

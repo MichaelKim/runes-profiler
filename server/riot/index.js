@@ -18,14 +18,19 @@ function query(path, region) {
 
           res.on('data', chunk => (rawData += chunk));
           res.on('end', () => {
-            let jsonData = JSON.parse(rawData);
-            // if (data.status && data.status.status_code >= 400) {
-            // 	console.error(data);
-            //  reject(data.status.message);
-            // }
-            // else {
-            resolve(jsonData);
-            // }
+            if (res.statusCode === 200) {
+              const jsonData = JSON.parse(rawData);
+              resolve(jsonData);
+            } else {
+              try {
+                const jsonData = JSON.parse(rawData);
+                if (jsonData && jsonData.status && jsonData.status_code) {
+                  reject(jsonData.status_code);
+                }
+              } catch (e) {
+                reject('Invalid JSON');
+              }
+            }
           });
         }
       )
@@ -36,22 +41,8 @@ function query(path, region) {
   });
 }
 
-function getPlayer(summonerName, region) {
-  return query(
-    '/lol/summoner/v3/summoners/by-name/' + summonerName,
-    region
-  ).then(data => {
-    if (data.status && data.status.status_code >= 400) {
-      // Assuming errors are formatted this way
-      // if (summonerData.status.status_code === 404) { // Summoner not found
-      // 	res.send('Summoner name not found');
-      // }
-      Promise.reject(data.status.message);
-    } else {
-      console.log('Profile from riot');
-      return data;
-    }
-  });
+function getSummoner(summonerName, region) {
+  return query('/lol/summoner/v3/summoners/by-name/' + summonerName, region);
 }
 
 function getMatches(accountId, region) {
@@ -65,7 +56,7 @@ function getMatch(matchId, region, callback) {
   return query('/lol/match/v3/matches/' + matchId, region);
 }
 
-function getPlayerData(accountId, region) {
+function getPlayersData(accountId, region) {
   return getMatches(accountId, region).then(matches => {
     const promises = matches.map(m => getMatch(m.gameId, region));
     return Promise.all(promises).then(matchesData => {
@@ -117,7 +108,7 @@ function getPlayerData(accountId, region) {
 
           // Champions
           let champData = playersData[stripName].champions;
-          const keystoneId = part.stats['perk0'];
+          const keystoneId = part.stats.perk0;
 
           if (!champData[part.championId]) {
             champData[part.championId] = {
@@ -175,17 +166,14 @@ function getRegionEndpoint(region) {
       tr: 'tr1',
       ru: 'ru',
       pbe: 'pbe1'
-    }[region] || ''
+    }[region] || null
   );
 }
 
 module.exports = {
-  query,
-  getPlayer,
-  getMatches,
-  getMatch,
+  getSummoner,
   validName,
   getStripName,
-  getPlayerData,
+  getPlayersData,
   getRegionEndpoint
 };
