@@ -45,7 +45,7 @@ class App extends React.Component {
               >
                 <img
                   style={{ width: '100px', height: '100px' }}
-                  src={'../assets/champion/' + this.state.data.name + '.png'}
+                  src={'http://ddragon.leagueoflegends.com/cdn/8.9.1/img/champion/' + this.state.data.name + '.png'}
                 />
                 <h1
                   style={{

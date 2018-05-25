@@ -33,7 +33,7 @@ render(
           {Object.values(championNames).map(c => (
             <img
               style={{ width: '75px', height: '75px', cursor: 'pointer' }}
-              src={'../assets/champion/' + c + '.png'}
+              src={'http://ddragon.leagueoflegends.com/cdn/8.9.1/img/champion/' + c + '.png'}
               onClick={() => (window.location.href = '/champion?name=' + c)}
               key={c}
             />

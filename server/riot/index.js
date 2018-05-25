@@ -2,38 +2,31 @@ const https = require('https');
 const XRegExp = require('xregexp');
 const nameRegex = new XRegExp('^[0-9\\p{L} _\\.]+$');
 
-function query(path, region) {
+function query(path, region, query) {
   return new Promise((resolve, reject) => {
-    console.log('Querying riot:', path, region);
+    const qp = query ? query : '';
+    console.log('Querying riot:', path, region, qp);
     https
-      .get(
-        'https://' +
-          region +
-          '.api.riotgames.com' +
-          path +
-          '?api_key=' +
-          process.env.RIOT_API,
-        res => {
-          let rawData = '';
+      .get('https://' + region + '.api.riotgames.com' + path + '?api_key=' + process.env.RIOT_API + qp, res => {
+        let rawData = '';
 
-          res.on('data', chunk => (rawData += chunk));
-          res.on('end', () => {
-            if (res.statusCode === 200) {
+        res.on('data', chunk => (rawData += chunk));
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            const jsonData = JSON.parse(rawData);
+            resolve(jsonData);
+          } else {
+            try {
               const jsonData = JSON.parse(rawData);
-              resolve(jsonData);
-            } else {
-              try {
-                const jsonData = JSON.parse(rawData);
-                if (jsonData && jsonData.status && jsonData.status_code) {
-                  reject(jsonData.status_code);
-                }
-              } catch (e) {
-                reject('Invalid JSON');
+              if (jsonData && jsonData.status && jsonData.status_code) {
+                reject(jsonData.status_code);
               }
+            } catch (e) {
+              reject('Invalid JSON');
             }
-          });
-        }
-      )
+          }
+        });
+      })
       .on('error', e => {
         console.error(e.message);
         reject(e.message);
@@ -46,10 +39,7 @@ function getSummoner(summonerName, region) {
 }
 
 function getMatches(accountId, region) {
-  return query(
-    '/lol/match/v3/matchlists/by-account/' + accountId + '/recent',
-    region
-  ).then(data => data.matches);
+  return query('/lol/match/v3/matchlists/by-account/' + accountId, region, '&endIndex=20').then(data => data.matches);
 }
 
 function getMatch(matchId, region, callback) {
@@ -65,9 +55,7 @@ function getPlayersData(accountId, region) {
       matchesData.forEach(match => {
         match.participantIdentities.forEach(p => {
           const playerId = p.participantId;
-          const part = match.participants.find(
-            q => q.participantId === playerId
-          );
+          const part = match.participants.find(q => q.participantId === playerId);
 
           const stripName = getStripName(p.player.summonerName);
 
@@ -98,8 +86,7 @@ function getPlayersData(accountId, region) {
             if (part.stats.win) runeData[runeId].wins++;
             runeData[runeId].games++;
             for (let j = 0; j < runeData[runeId].stats.length; j++) {
-              runeData[runeId].stats[j] +=
-                part.stats['perk' + i + 'Var' + (j + 1)];
+              runeData[runeId].stats[j] += part.stats['perk' + i + 'Var' + (j + 1)];
             }
 
             if (page) page += '@';
@@ -123,8 +110,7 @@ function getPlayersData(accountId, region) {
               games: 0
             };
           }
-          if (part.stats.win)
-            champData[part.championId].keystones[keystoneId].wins++;
+          if (part.stats.win) champData[part.championId].keystones[keystoneId].wins++;
           champData[part.championId].keystones[keystoneId].games++;
 
           if (!champData[part.championId].pages[page]) {
