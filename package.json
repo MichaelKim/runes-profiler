@@ -8,15 +8,15 @@
   },
   "bugs": "https://github.com/LenKagamine/runes-profiler/issues",
   "dependencies": {
-    "compression": "*",
-    "dotenv": "*",
-    "express": "*",
+    "compression": "^1.7.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
     "firebase-admin": "^5.6.0",
     "js-cookie": "^2.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
-    "xregexp": "*"
+    "xregexp": "^4.2.0"
   },
   "engines": {
     "node": ">=0.12.7"
