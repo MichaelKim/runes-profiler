@@ -16,10 +16,20 @@ To prevent sending too many requests, a player's stats won't be updated if they 
 
 ## Development
 
+Runes Profiler requires a Riot Games API key and a Firebase API key to run. Create a file in the root folder named `.env` and add the following keys:
+- `FIREBASE_KEY`: Firebase API key
+- `FIREBASE_URL`: URL to Firebase database
+- `RIOT_API`: Riot Games API key
+
 To build and run,
 
 - `npm install`
-- In separate windows, run `node ./server/index.js` and `npm run build`
+  - This will also build a production version of the client pages using webpack.
+- `npm start`
+
+To run in development mode,
+- `npm install`
+- `npm run dev`
 
 ### Technologies
 
@@ -27,7 +37,7 @@ Runes Profiler is built with a React / webpack frontend and a Node / Express bac
 
 ### Challenges
 
-1. I developed all of Runes Profiler using a development API key, so I was contrained under the rate limit. I used mock data to save API calls, especially when developing the UI, but it did give less flexibility during development.
+1. I developed all of Runes Profiler using a development API key, so I was constrained under the rate limit. I used mock data to save API calls, especially when developing the UI, but it did give less flexibility during development.
 2. Being rate limited also meant I can't collect more information for a player. Currently, Runes Profiler grabs the last 20 games, but extending that to 100 games would improve its rune analysis.
 3. I learned about the challenge one week after it started through a friend. There were a lot of other features I wanted to add, and the UI could have been more polished than I had hoped.
 4. With more time, I would have switched Firebase with a more robust database tool like Postgres or MongoDB. Also, I would have used some sort of CSS modules along with React to make it more modular, rather than putting all the CSS into one file.
