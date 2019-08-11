@@ -8,15 +8,15 @@
   },
   "bugs": "https://github.com/LenKagamine/runes-profiler/issues",
   "dependencies": {
-    "compression": "^1.7.3",
-    "dotenv": "^6.0.0",
-    "express": "^4.16.3",
+    "compression": "^1.7.4",
+    "dotenv": "^6.2.0",
+    "express": "^4.17.1",
     "firebase-admin": "^5.6.0",
     "js-cookie": "^2.2.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.2.2",
-    "xregexp": "^4.2.0"
+    "xregexp": "^4.2.4"
   },
   "engines": {
     "node": ">=0.12.7"
@@ -34,7 +34,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "uglify-js": "^3.3.2",
+    "uglify-js": "^3.6.0",
     "webpack": "^3.10.0"
   }
 }
